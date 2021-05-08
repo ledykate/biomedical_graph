@@ -72,6 +72,31 @@ for i in range(n):
                     matrix_smeg[i][m] = 1
                     edges_graph.append((i,m))
 matrix_smeg = np.array(matrix_smeg)
+for i in range(len(all_latin_name)):
+    text_label = all_latin_name[i]
+    all_latin_name[i] = text_label.replace(" ", "\n")
+    
+### ОТОБРАЖЕНИЕ В ВИДЕ НАПРАВЕЛЕННОГО ГРАФА
+#####-----------------
+g = igraph.Graph(directed = True) # напревленный граф
+g.add_vertices(n) # количество вершин
+#g.vs["label"] =  [i for i in range(n)] # подписи вершин
+g.vs["label"] = all_latin_name
+g.add_edges(edges_graph) # рёбра
+#g.es['color'] = ['green', 'red', 'blue', 'yellow','black'] # цвета рёбер
+# построение графа
+#igraph.plot(g, "test_indic.png", #bbox = (800,800),
+            #vertex_label_size = 12, vertex_size = 75, margin = (100,45,100,45))
+igraph.plot(g,"test_indic.png",bbox = (800,800),margin = (100,45,100,45),
+            vertex_label_size = 12, vertex_size = 65,
+            vertex_label_color = 'black', vertex_color = 'white',
+            edge_width = 3)
+webbrowser.open_new_tab("test_indic.png")
+            # цвета вершин
+            #vertex_color = ['red','green','green','green','green','green'])  
+#webbrowser.open_new_tab("test_indic.png") #открытие созданного файла
+
+
 
 '''       
 rows_lat1 = cursor.execute("SELECT Latin_name\
