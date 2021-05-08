@@ -66,10 +66,12 @@ edges_graph = []
 for i in range(n):
     for j in range(len(base_name)):
         if all_latin_name[i] == base_name[j]:
-            for h in range(len(formula_latex[j])):
-                m = all_latin_name.index(formula_latex[j][h])
-                matrix_smeg[i][m] = 1
-                edges_graph.append((i,m))
+            if (len(formula_latex[j]))!=0:
+                for h in range(len(formula_latex[j])):
+                    m = all_latin_name.index(formula_latex[j][h])
+                    matrix_smeg[i][m] = 1
+                    edges_graph.append((i,m))
+matrix_smeg = np.array(matrix_smeg)
 
 '''       
 rows_lat1 = cursor.execute("SELECT Latin_name\
