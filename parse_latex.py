@@ -15,26 +15,26 @@ def parse_latex(string_latex):
     # нижние индексы, которы часто встречаются в верхнем регистре
     delete_index_upp = [i.upper() for i in delete_index_low]
     # удаление значений до знака =, включая его
-    st_latex = string_latex.split('=', 1)[1].lstrip()
+    string_latex = string_latex.split('=', 1)[1].lstrip()
     
     for i in delete_symbol: # удаление символо и скобок и замена их на пробел
-        st_latex = st_latex.replace(i, ' ')
+        string_latex = string_latex.replace(i, ' ')
     for j in delete_sequence: # удаление операторов latex и замена их на пробел
-        st_latex = st_latex.replace(j, ' ')
+        string_latex = string_latex.replace(j, ' ')
     for h in delete_index_low: # удаление индексов в нижнем регистре
-        st_latex = st_latex.replace(h, ' ')
+        string_latex = string_latex.replace(h, ' ')
     for k in delete_index_upp: # удаление индексов в верхнем регистре
-        st_latex = st_latex.replace(k, ' ') 
+        string_latex = string_latex.replace(k, ' ') 
     
-    result = st_latex.split(' ') # разбитие строки по разделителю пробел
+    result = string_latex.split(' ') # разбитие строки по разделителю пробел
     r_empty = '' # пустое значение
     while r_empty in result: # пока в массиве есть пустой элемент
         result.remove(r_empty) # удалим его
     result = [r for r in result if not r.isdigit()] # удаление чисел
-    result = list(set(result)) # выделить только уникальные значения (если вдруг есть повторения)
+    #result = list(set(result)) # выделить только уникальные значения (если вдруг есть повторения)
     return(result) # результат
 
-str_lat = r'$КВ=\frac{ЧСС_{n-1}\cdot10}{ПД}$'
+str_lat = r'$ИМТ=\frac{МТ}{{{ДТ}^{2}}}$'
 res = parse_latex(str_lat)
 
 
