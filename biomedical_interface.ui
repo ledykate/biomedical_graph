@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -124,6 +127,9 @@
          <string>Названия показателей</string>
         </attribute>
         <widget class="QTableWidget" name="tableWidget">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>0</x>
@@ -132,6 +138,12 @@
            <height>315</height>
           </rect>
          </property>
+         <property name="rowCount">
+          <number>0</number>
+         </property>
+         <property name="columnCount">
+          <number>0</number>
+         </property>
         </widget>
        </widget>
        <widget class="QWidget" name="tab_2">
@@ -139,6 +151,9 @@
          <string>Первичные показатели и методики их измерения</string>
         </attribute>
         <widget class="QTableWidget" name="tableWidget_2">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
          <property name="geometry">
           <rect>
            <x>0</x>
