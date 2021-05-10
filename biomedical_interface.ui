@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1493</width>
-    <height>868</height>
+    <width>1527</width>
+    <height>945</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -25,8 +25,8 @@
      <rect>
       <x>30</x>
       <y>20</y>
-      <width>851</width>
-      <height>791</height>
+      <width>821</width>
+      <height>861</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -43,8 +43,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>828</width>
-       <height>768</height>
+       <width>798</width>
+       <height>838</height>
       </rect>
      </property>
      <widget class="QLabel" name="img">
@@ -52,8 +52,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>831</width>
-        <height>761</height>
+        <width>821</width>
+        <height>861</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -80,191 +80,224 @@
      </widget>
     </widget>
    </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
+   <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>890</x>
-      <y>20</y>
-      <width>571</width>
-      <height>199</height>
+      <x>870</x>
+      <y>30</y>
+      <width>624</width>
+      <height>661</height>
      </rect>
     </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="1" column="2">
-      <widget class="QCheckBox" name="type_indicator">
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>Тип показателя</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; font-style:italic;&quot;&gt;Графовая модель онтологии биомедицинских показателей&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="0" column="2">
-      <widget class="QCheckBox" name="language_add">
+     <item>
+      <widget class="QLabel" name="label_8">
        <property name="text">
-        <string>Язык дополнительного
-названия показателя</string>
+        <string/>
        </property>
       </widget>
      </item>
-     <item row="0" column="1">
-      <widget class="QCheckBox" name="additional_name">
+     <item>
+      <widget class="QLabel" name="label_6">
        <property name="text">
-        <string>Дополнительное название 
-показателя</string>
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Язык вывода графа&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QCheckBox" name="group_systems">
-       <property name="text">
-        <string>Группы системы</string>
+     <item>
+      <widget class="QComboBox" name="language_indicator"/>
+     </item>
+     <item>
+      <widget class="QTabWidget" name="tabWidget">
+       <property name="currentIndex">
+        <number>0</number>
        </property>
+       <widget class="QWidget" name="tab">
+        <attribute name="title">
+         <string>Названия показателей</string>
+        </attribute>
+        <widget class="QTableWidget" name="tableWidget">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>612</width>
+           <height>315</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_2">
+        <attribute name="title">
+         <string>Первичные показатели и методики их измерения</string>
+        </attribute>
+        <widget class="QTableWidget" name="tableWidget_2">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>612</width>
+           <height>315</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
       </widget>
      </item>
-     <item row="0" column="0">
-      <widget class="QCheckBox" name="basic_name">
+     <item>
+      <layout class="QGridLayout" name="gridLayout_4">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Увеличить масштаб&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QScrollBar" name="ScrollBar_small">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="minimum">
+          <number>100</number>
+         </property>
+         <property name="maximum">
+          <number>500</number>
+         </property>
+         <property name="pageStep">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Уменьшить масштаб&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QScrollBar" name="ScrollBar_big">
+         <property name="minimum">
+          <number>100</number>
+         </property>
+         <property name="maximum">
+          <number>500</number>
+         </property>
+         <property name="pageStep">
+          <number>100</number>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_update">
        <property name="font">
         <font>
-         <weight>50</weight>
-         <italic>false</italic>
-         <bold>false</bold>
-         <underline>false</underline>
-         <strikeout>false</strikeout>
+         <pointsize>10</pointsize>
         </font>
        </property>
-       <property name="mouseTracking">
-        <bool>false</bool>
-       </property>
-       <property name="tabletTracking">
-        <bool>false</bool>
-       </property>
-       <property name="styleSheet">
-        <string notr="true"/>
-       </property>
-       <property name="text">
-        <string>Базовое название
-показателя</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QCheckBox" name="systems">
-       <property name="text">
-        <string>Система</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QCheckBox" name="formula">
-       <property name="text">
-        <string>Формула расчёта</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="1">
-      <widget class="QCheckBox" name="method">
-       <property name="text">
-        <string>Методика измерения</string>
-       </property>
-      </widget>
-     </item>
-     <item row="2" column="2">
-      <widget class="QCheckBox" name="equipment">
-       <property name="text">
-        <string>Оборудование</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QCheckBox" name="literatures">
-       <property name="text">
-        <string>Источник показателя</string>
-       </property>
-      </widget>
-     </item>
-     <item row="3" column="1">
-      <widget class="QCheckBox" name="source_method">
-       <property name="text">
-        <string>Порядок проведения
-методики</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QPushButton" name="pushButton_update">
-    <property name="geometry">
-     <rect>
-      <x>1160</x>
-      <y>270</y>
-      <width>111</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="layoutDirection">
-     <enum>Qt::LeftToRight</enum>
-    </property>
-    <property name="text">
-     <string>Обновить граф</string>
-    </property>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>890</x>
-      <y>380</y>
-      <width>421</width>
-      <height>61</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout_4">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label_9">
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Увеличить&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QScrollBar" name="ScrollBar_small">
        <property name="layoutDirection">
-        <enum>Qt::RightToLeft</enum>
+        <enum>Qt::LeftToRight</enum>
        </property>
-       <property name="minimum">
-        <number>100</number>
-       </property>
-       <property name="maximum">
-        <number>500</number>
-       </property>
-       <property name="pageStep">
-        <number>100</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QLabel" name="label_10">
        <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Уменьшить&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <string>Обновить граф</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QScrollBar" name="ScrollBar_big">
-       <property name="minimum">
-        <number>100</number>
+     <item>
+      <widget class="QLabel" name="label_7">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
        </property>
-       <property name="maximum">
-        <number>500</number>
-       </property>
-       <property name="pageStep">
-        <number>100</number>
-       </property>
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Цветовое обозначение вершин&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
        </property>
       </widget>
+     </item>
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #0000ff; color: #0000ff &quot;&gt;Синий&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
+</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Показатели</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Метод измерения</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #00ff00; color: #00ff00&quot;&gt;Зелёный&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
+</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #ff0000; color: #ff0000&quot;&gt;Красный&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
+</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Система организма</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Оборудование</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #ffff00; color: #ffff00&quot;&gt;Жёлтый&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+
+</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
     </layout>
    </widget>
@@ -274,12 +307,24 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1493</width>
+     <width>1527</width>
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Сохранить граф</string>
+    </property>
+    <addaction name="action"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="action">
+   <property name="text">
+    <string>Сохранить как</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

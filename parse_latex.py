@@ -31,7 +31,7 @@ def parse_latex(string_latex):
     while r_empty in result: # пока в массиве есть пустой элемент
         result.remove(r_empty) # удалим его
     result = [r for r in result if not r.isdigit()] # удаление чисел
-    #result = list(set(result)) # выделить только уникальные значения (если вдруг есть повторения)
+    result = list(set(result)) # выделить только уникальные значения (если вдруг есть повторения)
     return(result) # результат
 
 str_lat = r'$ИМТ=\frac{МТ}{{{ДТ}^{2}}}$'
