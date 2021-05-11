@@ -119,8 +119,13 @@
      </item>
      <item>
       <widget class="QCheckBox" name="checkBox_abbrev">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
        <property name="text">
-        <string>CheckBox</string>
+        <string>Аббревиатуры</string>
        </property>
       </widget>
      </item>
@@ -355,12 +360,12 @@
     <property name="title">
      <string>Сохранить граф</string>
     </property>
-    <addaction name="action"/>
+    <addaction name="saveas_graph"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="action">
+  <action name="saveas_graph">
    <property name="text">
     <string>Сохранить как</string>
    </property>

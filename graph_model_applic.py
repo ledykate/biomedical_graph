@@ -50,13 +50,9 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         self.language_indicator.addItems(L)
         
         self.pushButton_update.clicked.connect(self.update_graph)
-        
         self.ScrollBar_big.valueChanged.connect(self.big) #увелечение изображения 
         self.ScrollBar_small.valueChanged.connect(self.small) #уменьшение изображения
-        
-        #self.click = 0
-        self.checkBox_abbrev.stateChanged.connect(self.update_graph)
-        
+        self.saveas_graph.triggered.connect(self.saveas_file) #сохранить/сохранить как
         
         self.vertices_label = [] # названия вершин
         self.color_vs = [] # цвета вершин
@@ -232,7 +228,13 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         # построение графа
         igraph.plot(self.g, "test_indic.png", layout = self.layout,bbox = (800,800),margin = (35,80,35,80))
         '''
-
+    def saveas_file(self): #сохранить изображение как (смена имени или выбор другой папки)
+        #выбор папки и имени для сохранения
+        self.name = QFileDialog.getSaveFileName(self, 'Сохранить как','', "*.png")[0]
+        self.image = ImageQt.fromqimage(self.img.pixmap())
+        self.image.save(self.name) #сохранить под новым именем
+        QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
+        
     def big(self): #увеличение изображения
         w = self.image.size[0] #ширина изображения
         h = self.image.size[1] #высота изображения
@@ -250,45 +252,111 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         y = round(h/(val/100)) #новое значение высоты
         self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize((x, y)))) #изображение pixmap
         self.img.setPixmap(self.photo)  #добавляем на виджет
-
         
     def update_graph(self):
-        #self.click = 1
         check = self.checkBox_abbrev.isChecked()
-  
-        # printing the check
-        print(check)
         self.g = igraph.Graph(directed = True)
-        self.g.add_vertices(len(self.vertices_label)) # количество вершин]
+        self.g.add_vertices(len(self.vertices_label)) # количество вершин
         self.lang = self.language_indicator.currentText()
-
+        
         if self.lang != "Латинские названия":
-            self.new_vertices_label = self.origin_vs.copy()
             self.lat = []
             self.lang_name = []
-            self.rows_lang = self.cursor.execute("SELECT Latin_name, Decoding_abbrev\
-                            FROM (additional_name INNER JOIN basic_name_indicator \
-                            ON additional_name.idBasicName = basic_name_indicator.idBasicName) \
-                            INNER JOIN language_add_indicator \
-                            ON additional_name.idLanguage = language_add_indicator.idLanguage \
-                            WHERE Name_language='%s'" % self.lang)
-            self.rows_lang = self.cursor.fetchall()
-            if self.rows_lang == ():
+            err = 0
+            err1 = 0
+            #if self.rows_lang == ():
+                #QMessageBox.information(self, 'Предупреждение',
+                                        #"К сожалению, дополнительных названий на данном языке нет. Но вы можете видеть только названия на латыни")
+                #self.language_indicator.setCurrentIndex(0)
+                #self.vertices_label = self.origin_vs.copy()
+            #else:
+            self.new_vertices_label = self.origin_vs.copy()
+            for i in range(len(self.new_vertices_label)):
+                row_lang = self.cursor.execute("SELECT Decoding_abbrev \
+                                FROM (additional_name INNER JOIN basic_name_indicator \
+                                ON additional_name.idBasicName = basic_name_indicator.idBasicName) \
+                                INNER JOIN language_add_indicator \
+                                ON additional_name.idLanguage = language_add_indicator.idLanguage \
+                                WHERE (Name_language='%s') AND (Latin_name='%s')\
+                                ORDER BY idAddName limit 1;" \
+                                %(self.lang, self.new_vertices_label[i]))
+                row_lang = self.cursor.fetchall()
+                #print(row_lang)
+                if row_lang == ():
+                    err += 1
+                else:
+                    self.new_vertices_label[i] = row_lang[0][0]
+            if err == len(self.new_vertices_label):
                 QMessageBox.information(self, 'Предупреждение',
                                         "К сожалению, дополнительных названий на данном языке нет. Но вы можете видеть только названия на латыни")
                 self.language_indicator.setCurrentIndex(0)
-                self.vertices_label = self.origin_vs
+                self.vertices_label = self.origin_vs.copy()
+                err = 0
             else:
-                for i in range(len(self.rows_lang)):
-                    self.lat.append(self.rows_lang[i][0])
-                    self.lang_name.append(self.rows_lang[i][1])
-                for i in range(len(self.new_vertices_label)):
-                    for j in range(len(self.rows_lang)):
-                        if self.origin_vs[i]==self.lat[j]:
-                            self.new_vertices_label[i]=self.lang_name[j]
-                self.vertices_label = self.new_vertices_label
+                if check==False:
+                    self.vertices_label = self.new_vertices_label
+                else:
+                    self.new_vertices_label_1 = self.new_vertices_label.copy()
+                    for i in range(len(self.new_vertices_label_1)):
+                        row_abb = self.cursor.execute("SELECT Abbreviation_add_name \
+                                                      FROM additional_name \
+                                                      WHERE (Decoding_abbrev='%s')\
+                                                      ORDER BY idAddName;" \
+                                                      % self.new_vertices_label_1[i])
+                        row_abb = self.cursor.fetchall()
+                        if row_abb == ():
+                            err1 += 1
+                        else:
+                            self.new_vertices_label_1[i] = row_abb[0][0]
+                    
+                    if err1 == len(self.new_vertices_label_1):
+                        QMessageBox.information(self, 'Предупреждение',
+                                        "Для данного языка нет аббревиатур")
+                        self.vertices_label = self.new_vertices_label
+                        err1 = 0
+                    else:
+                        #print(self.new_vertices_label_2)
+                        self.new_vertices_label_2 = self.new_vertices_label_1.copy()
+                        row_sh_lt_add = self.cursor.execute("SELECT Latin_name, Short_name \
+                                                FROM basic_name_indicator;")
+                        row_sh_lt_add = self.cursor.fetchall()
+                        lat_add = []
+                        sh_add = []
+                        for i in range(len(row_sh_lt_add)):
+                            lat_add.append(row_sh_lt_add[i][0])
+                            sh_add.append(row_sh_lt_add[i][1])
+                        #print(lat_add)
+                        #print(sh_add)
+                        #print(self.new_vertices_label_2)
+                        for i in range(len(self.new_vertices_label_2)):
+                            for j in range(len(lat_add)):
+                                if self.new_vertices_label_2[i]==lat_add[j]:
+                                    #print("ОК")
+                                    self.new_vertices_label_2[i] = sh_add[j]
+                                    #print(self.new_vertices_label_2[i])
+                        #print(self.new_vertices_label_2)
+                        
+                        self.vertices_label = self.new_vertices_label_2
         else:
-            self.vertices_label = self.origin_vs
+            if check==False:
+                self.vertices_label = self.origin_vs.copy()
+            else:
+                self.ver_short_latin = self.origin_vs.copy()
+                row_sh_lt = self.cursor.execute("SELECT Latin_name, Short_name \
+                                                FROM basic_name_indicator;")
+                row_sh_lt = self.cursor.fetchall()
+                lat = []
+                sh = []
+                for i in range(len(row_sh_lt)):
+                    lat.append(row_sh_lt[i][0])
+                    sh.append(row_sh_lt[i][1])
+                for i in range(len(self.ver_short_latin)):
+                    for j in range(len(lat)):
+                        if self.ver_short_latin[i] == lat[j]:
+                            self.ver_short_latin[i] = sh[j]
+                self.vertices_label = self.ver_short_latin    
+            
+            
         self.output_vs = self.vertices_label.copy()
         for i in range(len(self.output_vs)):
             text_label = self.output_vs[i]
@@ -306,19 +374,12 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         # построение графа
         igraph.plot(self.g, "test_indic.png", layout = self.layout,bbox = (800,800),margin = (35,80,35,80))
         # запрос
-        filename = os.path.abspath("test_indic.png")
-        self.image = Image.open(filename) #открыть файл как изображение
+        self.filename = os.path.abspath("test_indic.png")
+        self.image = Image.open(self.filename) #открыть файл как изображение
         self.photo = QPixmap(ImageQt.toqpixmap(self.image))
         self.img.setPixmap(self.photo) #вывести изображение
         
-    #def short_name_ot(self,state):
-        #if state == Qt.Clicked:
-            #QMessageBox.information(self, 'Предупреждение',
-                                    #"Выбрано и нажато")
-        #else:
-            #QMessageBox.information(self, 'Предупреждение',
-                                    #"НЕ Выбрано и нажато")
-            
+
 
 #вызов окна 
 if __name__ == '__main__': 
