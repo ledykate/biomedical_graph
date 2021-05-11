@@ -118,6 +118,18 @@
       <widget class="QComboBox" name="language_indicator"/>
      </item>
      <item>
+      <widget class="QCheckBox" name="checkBox">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Вывести аббревиатуры вместо полных имён</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
         <number>0</number>
