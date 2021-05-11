@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1527</width>
+    <width>1570</width>
     <height>945</height>
    </rect>
   </property>
@@ -118,21 +118,16 @@
       <widget class="QComboBox" name="language_indicator"/>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox">
-       <property name="font">
-        <font>
-         <pointsize>11</pointsize>
-        </font>
-       </property>
+      <widget class="QCheckBox" name="checkBox_abbrev">
        <property name="text">
-        <string>Вывести аббревиатуры вместо полных имён</string>
+        <string>CheckBox</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QTabWidget" name="tabWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="tab">
         <attribute name="title">
@@ -147,7 +142,7 @@
            <x>0</x>
            <y>0</y>
            <width>612</width>
-           <height>315</height>
+           <height>271</height>
           </rect>
          </property>
          <property name="rowCount">
@@ -160,7 +155,7 @@
        </widget>
        <widget class="QWidget" name="tab_2">
         <attribute name="title">
-         <string>Первичные показатели и методики их измерения</string>
+         <string>Методики</string>
         </attribute>
         <widget class="QTableWidget" name="tableWidget_2">
          <property name="enabled">
@@ -171,7 +166,25 @@
            <x>0</x>
            <y>0</y>
            <width>612</width>
-           <height>315</height>
+           <height>271</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+       <widget class="QWidget" name="tab_3">
+        <attribute name="title">
+         <string>Системы организма</string>
+        </attribute>
+        <widget class="QTableWidget" name="tableWidget_3">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>612</width>
+           <height>271</height>
           </rect>
          </property>
         </widget>
@@ -334,7 +347,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1527</width>
+     <width>1570</width>
      <height>26</height>
     </rect>
    </property>

@@ -54,6 +54,10 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         self.ScrollBar_big.valueChanged.connect(self.big) #увелечение изображения 
         self.ScrollBar_small.valueChanged.connect(self.small) #уменьшение изображения
         
+        #self.click = 0
+        self.checkBox_abbrev.stateChanged.connect(self.update_graph)
+        
+        
         self.vertices_label = [] # названия вершин
         self.color_vs = [] # цвета вершин
         ####### ПОКАЗАТЕЛИ И ФОРУМАЛА
@@ -236,8 +240,6 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         x = round((val/100)*w) #новое значение ширины
         y = round((val/100)*h) #новое значение высоты
         self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize((x, y)))) #изображение pixmap
-        #self.width.setText(str(x)+' px') #вывод ширины
-        #self.height.setText(str(y)+' px') #вывод высоты
         self.img.setPixmap(self.photo) #добавляем на виджет
         
     def small(self): #уменьшение изображения
@@ -247,52 +249,46 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         x = round(w/(val/100)) #новое значение ширина
         y = round(h/(val/100)) #новое значение высоты
         self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize((x, y)))) #изображение pixmap
-        #self.width.setText(str(x)+' px') #вывод ширины
-        #self.height.setText(str(y)+' px') #вывод высоты
         self.img.setPixmap(self.photo)  #добавляем на виджет
 
+        
     def update_graph(self):
+        #self.click = 1
+        check = self.checkBox_abbrev.isChecked()
+  
+        # printing the check
+        print(check)
         self.g = igraph.Graph(directed = True)
         self.g.add_vertices(len(self.vertices_label)) # количество вершин]
         self.lang = self.language_indicator.currentText()
-        '''
-        for i in range(len(self.vertices_label)):
-            text_label = self.vertices_label[i]
-            self.vertices_label[i] = text_label.replace(" ", "\n") # расзделитель пробел
-        for i in range(len(self.vertices_label)):
-            text_label = self.vertices_label[i]
-            self.vertices_label[i] = text_label.replace("-", "\n") # разделитель дефис 
-            self.g.vs["label"] = self.vertices_label
-        '''
+
         if self.lang != "Латинские названия":
-            self.new_vertices_label = self.vertices_label.copy()
-            lat = []
-            lang_name = []
-            rows_lang = self.cursor.execute("SELECT Latin_name, Decoding_abbrev \
+            self.new_vertices_label = self.origin_vs.copy()
+            self.lat = []
+            self.lang_name = []
+            self.rows_lang = self.cursor.execute("SELECT Latin_name, Decoding_abbrev\
                             FROM (additional_name INNER JOIN basic_name_indicator \
                             ON additional_name.idBasicName = basic_name_indicator.idBasicName) \
                             INNER JOIN language_add_indicator \
                             ON additional_name.idLanguage = language_add_indicator.idLanguage \
                             WHERE Name_language='%s'" % self.lang)
-            rows_lang = self.cursor.fetchall()
-            print(rows_lang)
-            if rows_lang == ():
+            self.rows_lang = self.cursor.fetchall()
+            if self.rows_lang == ():
                 QMessageBox.information(self, 'Предупреждение',
                                         "К сожалению, дополнительных названий на данном языке нет. Но вы можете видеть только названия на латыни")
+                self.language_indicator.setCurrentIndex(0)
+                self.vertices_label = self.origin_vs
             else:
-                for i in range(len(rows_lang)):
-                    lat.append(rows_lang[i][0])
-                    lang_name.append(rows_lang[i][1])
+                for i in range(len(self.rows_lang)):
+                    self.lat.append(self.rows_lang[i][0])
+                    self.lang_name.append(self.rows_lang[i][1])
                 for i in range(len(self.new_vertices_label)):
-                    for j in range(len(rows_lang)):
-                        if self.new_vertices_label[i]==lat[j]:
-                            self.new_vertices_label[i]=lang_name[j]
+                    for j in range(len(self.rows_lang)):
+                        if self.origin_vs[i]==self.lat[j]:
+                            self.new_vertices_label[i]=self.lang_name[j]
                 self.vertices_label = self.new_vertices_label
-                #self.g.vs["label"] = self.new_vertices_label
         else:
             self.vertices_label = self.origin_vs
-            #self.g.vs["label"] = self.vertices_label
-            
         self.output_vs = self.vertices_label.copy()
         for i in range(len(self.output_vs)):
             text_label = self.output_vs[i]
@@ -315,6 +311,15 @@ class Main(QMainWindow): #класс, где храняться все дейс�
         self.photo = QPixmap(ImageQt.toqpixmap(self.image))
         self.img.setPixmap(self.photo) #вывести изображение
         
+    #def short_name_ot(self,state):
+        #if state == Qt.Clicked:
+            #QMessageBox.information(self, 'Предупреждение',
+                                    #"Выбрано и нажато")
+        #else:
+            #QMessageBox.information(self, 'Предупреждение',
+                                    #"НЕ Выбрано и нажато")
+            
+
 #вызов окна 
 if __name__ == '__main__': 
    app = QApplication(sys.argv) 
