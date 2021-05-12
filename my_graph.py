@@ -52,7 +52,7 @@ def my_graph(cursor):
     # добавление в массив всех элементов запроса
     for i in range(len(row_all_lat)):
         all_latin_name.append(row_all_lat[i][0])
-        color_vs.append([0,0,1]) # цвет у вершин голубой
+        color_vs.append([0,0.749,1]) # цвет у вершин голубой
     n = len(all_latin_name) # количество покавсех показателей
     
     edges_graph = [] # массив с рёбрами (кортежы)
@@ -154,7 +154,7 @@ def my_graph(cursor):
         for j in range(len(indic)): # по показателям из запроса
             if vertices_label[i]==indic[j]: # совпадают
                 sys = systems[j] # находим соотвествующую системы
-                color_vs.append([1,0,0]) # задаём цвет - красный
+                color_vs.append([1,0.2627,0.4553]) # задаём цвет - красный
                 edges_graph.append((i,vertices_label.index(sys))) # добавляем ребро
-    return(vertices_label,color_vs,edges_graph)
+    return(n,vertices_label,color_vs,edges_graph)
                 

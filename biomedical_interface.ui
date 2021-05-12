@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1570</width>
-    <height>945</height>
+    <width>1517</width>
+    <height>948</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -87,9 +87,9 @@
     <property name="geometry">
      <rect>
       <x>870</x>
-      <y>30</y>
+      <y>20</y>
       <width>624</width>
-      <height>661</height>
+      <height>861</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -130,70 +130,37 @@
       </widget>
      </item>
      <item>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="currentIndex">
-        <number>2</number>
+      <widget class="QTableWidget" name="table_system_ind">
+       <property name="rowCount">
+        <number>0</number>
        </property>
-       <widget class="QWidget" name="tab">
-        <attribute name="title">
-         <string>Названия показателей</string>
-        </attribute>
-        <widget class="QTableWidget" name="tableWidget">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>612</width>
-           <height>271</height>
-          </rect>
-         </property>
-         <property name="rowCount">
-          <number>0</number>
-         </property>
-         <property name="columnCount">
-          <number>0</number>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="tab_2">
-        <attribute name="title">
-         <string>Методики</string>
-        </attribute>
-        <widget class="QTableWidget" name="tableWidget_2">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>612</width>
-           <height>271</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
-       <widget class="QWidget" name="tab_3">
-        <attribute name="title">
-         <string>Системы организма</string>
-        </attribute>
-        <widget class="QTableWidget" name="tableWidget_3">
-         <property name="enabled">
-          <bool>false</bool>
-         </property>
-         <property name="geometry">
-          <rect>
-           <x>0</x>
-           <y>0</y>
-           <width>612</width>
-           <height>271</height>
-          </rect>
-         </property>
-        </widget>
-       </widget>
+       <property name="columnCount">
+        <number>0</number>
+       </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="horizontalHeaderCascadingSectionResizes">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>180</number>
+       </attribute>
+       <attribute name="horizontalHeaderHighlightSections">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="horizontalHeaderMinimumSectionSize">
+        <number>49</number>
+       </attribute>
+       <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderVisible">
+        <bool>true</bool>
+       </attribute>
+       <attribute name="verticalHeaderMinimumSectionSize">
+        <number>45</number>
+       </attribute>
       </widget>
      </item>
      <item>
@@ -281,7 +248,7 @@
        <item row="0" column="0">
         <widget class="QLabel" name="label_2">
          <property name="text">
-          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #0000ff; color: #0000ff &quot;&gt;Синий&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #00bfff; color: #00bfff &quot;&gt;Голубой&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 
 </string>
          </property>
@@ -313,7 +280,7 @@
        <item row="3" column="0">
         <widget class="QLabel" name="label_11">
          <property name="text">
-          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #ff0000; color: #ff0000&quot;&gt;Красный&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
+          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #ff436f; color: #ff436f&quot;&gt;Красный&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
 
 </string>
          </property>
@@ -352,7 +319,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1570</width>
+     <width>1517</width>
      <height>26</height>
     </rect>
    </property>
