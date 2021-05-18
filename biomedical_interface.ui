@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1517</width>
-    <height>948</height>
+    <width>1538</width>
+    <height>880</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -27,9 +27,9 @@
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>20</y>
+      <y>10</y>
       <width>821</width>
-      <height>861</height>
+      <height>811</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -47,7 +47,7 @@
        <x>0</x>
        <y>0</y>
        <width>798</width>
-       <height>838</height>
+       <height>788</height>
       </rect>
      </property>
      <widget class="QLabel" name="img">
@@ -55,8 +55,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>821</width>
-        <height>861</height>
+        <width>801</width>
+        <height>791</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -86,10 +86,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>870</x>
-      <y>20</y>
-      <width>624</width>
-      <height>861</height>
+      <x>860</x>
+      <y>10</y>
+      <width>661</width>
+      <height>801</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -97,13 +97,6 @@
       <widget class="QLabel" name="label">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:600; font-style:italic;&quot;&gt;Графовая модель онтологии биомедицинских показателей&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QLabel" name="label_8">
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>
@@ -127,6 +120,13 @@
        <property name="text">
         <string>Аббревиатуры</string>
        </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTableWidget" name="table_systems">
+       <attribute name="horizontalHeaderDefaultSectionSize">
+        <number>300</number>
+       </attribute>
       </widget>
      </item>
      <item>
@@ -165,13 +165,6 @@
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Увеличить масштаб&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QScrollBar" name="ScrollBar_small">
          <property name="layoutDirection">
@@ -214,6 +207,13 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="text">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:10pt;&quot;&gt;Увеличить масштаб&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
       </layout>
      </item>
      <item>
@@ -232,84 +232,7 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="label_7">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Цветовое обозначение вершин&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #00bfff; color: #00bfff &quot;&gt;Голубой&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-
-</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLabel" name="label_3">
-         <property name="text">
-          <string>Показатели</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Метод измерения</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #00ff00; color: #00ff00&quot;&gt;Зелёный&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-
-</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="label_11">
-         <property name="text">
-          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #ff436f; color: #ff436f&quot;&gt;Красный&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-
-</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="1">
-        <widget class="QLabel" name="label_12">
-         <property name="text">
-          <string>Система организма</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="label_13">
-         <property name="text">
-          <string>Оборудование</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_14">
-         <property name="text">
-          <string>&lt;html&gt;&lt;body&gt;&lt;p style=&quot;background-color: #ffff00; color: #ffff00&quot;&gt;Жёлтый&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;
-
-</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <layout class="QGridLayout" name="gridLayout"/>
      </item>
     </layout>
    </widget>
@@ -319,7 +242,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1517</width>
+     <width>1538</width>
      <height>26</height>
     </rect>
    </property>
