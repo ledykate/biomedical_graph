@@ -269,20 +269,23 @@ class Main(QMainWindow): # класс, где храняться все дейс
                 text_label = self.output_vs[i]
                 self.output_vs[i] = text_label.replace("-", "\n") # разделитель дефис
             self.g.vs["label"] = self.output_vs # подписи вершин
-            self.g.vs['color'] = self.color_vs # цвета вершин
+            self.g.vs["color"] = self.color_vs # цвета вершин
             self.g.vs["size"] = 70 # размер вершин
             self.g.vs["label_size"] = 10 # размер подписи
             self.g.add_edges(self.edges_graph) # добавление рёбер
             self.g.es["width"] = 1.2 # ширина ребра
+            # нумерация рёбер
+            self.g.es["weight"] = [i+1 for i in range(len(self.edges_graph))]
+            self.g.es["label"] = self.g.es["weight"]
             # стиль отображения графа
             self.layout = self.g.layout_fruchterman_reingold()
             
             if len(self.sys_check) < round(len(self.sys_ind)/3):
-                self.bbox = (1000,1000)
+                self.bbox = (1050,1050)
             elif round(len(self.sys_ind)/3) <= len(self.sys_check) <= round(len(self.sys_ind)*2/3):
-                self.bbox = (1600,1600)
+                self.bbox = (1850,1850)
             else:
-                self.bbox = (2150,2150)
+                self.bbox = (2250,2250)
                 
             # построение графа
             igraph.plot(self.g, "test_indic.png", layout = self.layout, 
