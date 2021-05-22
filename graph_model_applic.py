@@ -9,7 +9,7 @@ import os # поиск файла
 import MySQLdb # библиотека для работы с MySQL
 import igraph # библиотека для работы с графами
 import numpy as np # формирование случайно последовательности
-from my_graph import my_graph # функция для построения графа
+from my_graph import my_graph, syst_ind # функция для построения графа
 
 from PIL import Image, ImageQt # библиотека по работе с изображениями PIL (pillow)
 ## Работа с библиотекой PyQt5 для работы интерфейса
@@ -18,6 +18,7 @@ from PyQt5.uic import loadUi
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.Qt import QHeaderView
 
 class Main(QMainWindow): # класс, где храняться все действия
     def __init__(self): # служебная функция инициализации,загрузка окна
@@ -46,7 +47,9 @@ class Main(QMainWindow): # класс, где храняться все дейс
         self.ScrollBar_big.valueChanged.connect(self.big) #увелечение изображения 
         self.ScrollBar_small.valueChanged.connect(self.small) #уменьшение изображения
         self.saveas_graph.triggered.connect(self.saveas_file) #сохранить/сохранить как
-        
+        # вывод показателей по оборудованию
+        self.equipment_ind.currentTextChanged.connect(self.activated_equip) 
+        self.equip = []
         # задание значений для выпадающего списка
         # запрос из БД
         rows = self.cursor.execute("SELECT Name_language \
@@ -119,6 +122,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
         # положение ползунков масштаба после обновления
         self.ScrollBar_small.setValue(100)
         self.ScrollBar_big.setValue(100)
+        self.equipment_ind.clear()
         self.sys_check = [] # выбранные флажки
         # считываение какие флажки выбраны
         for i in range(len(self.sys_ind)):
@@ -141,13 +145,13 @@ class Main(QMainWindow): # класс, где храняться все дейс
                     row_ind_sys = self.cursor.fetchall()
                     if self.sys_check[j] == row_ind_sys[0][0]: # если показатель есть
                         self.color_vs[i] = self.color_orig[self.sys_check[j]-1] # задаём цвет
-            
-            check = self.checkBox_abbrev.isChecked() # значение флажка включения аббревиатуры
+ 
+            self.check = self.checkBox_abbrev.isChecked() # значение флажка включения аббревиатуры
             self.g = igraph.Graph(directed = True) # создание направленного графа
             self.g.add_vertices(len(self.vertices_label)) # количество вершин
             self.lang = self.language_indicator.currentText() # значение языка из выпадающего списка
         
-            m = 0 # переменная количества столбцов в таблице (с и без аббревиатуры)
+            self.m = 0 # переменная количества столбцов в таблице (с и без аббревиатуры)
             if self.lang != "Латинские названия": # Доп. имена на разных языках
                 err = 0 # переменная для ошибки
                 # копия списка вершин (нужна для динамического обновления)
@@ -178,17 +182,17 @@ class Main(QMainWindow): # класс, где храняться все дейс
                     # список имён вершин - исходный
                     self.vertices_label = self.origin_vs.copy()
                     err = 0 # обнуляем ошибки
-                    m = 1 # вывод только баз.имён показателей
+                    self.m = 1 # вывод только баз.имён показателей
                     self.checkBox_abbrev.setChecked(False) # флажок не влючён
                     
                 else: # ошибок нет, то
-                    if check == False: # флажок выключен
+                    if self.check == False: # флажок выключен
                         # найденный имена по запросу выводятся на графе 
                         # как название вершины
                         self.vertices_label = self.new_vertices_label 
-                        m = 2 # выводим баз.имя и доп.имя на заданном языке
+                        self.m = 2 # выводим баз.имя и доп.имя на заданном языке
                     else: # флажок включён
-                        m = 3 # для вывода баз.имени, доп.имени и аббревиатуры
+                        self.m = 3 # для вывода баз.имени, доп.имени и аббревиатуры
                         # создаём копию ранее найденных имён
                         self.new_vertices_label_sh = self.new_vertices_label.copy()
                         # находим аббревиатуру для этого имени
@@ -203,11 +207,11 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         self.vertices_label = self.new_vertices_label_sh   
                         
             else: # вывод базовых имён показателей
-                if check == False: # флажок выключен
-                    m = 1 # выводим только баз.имена
+                if self.check == False: # флажок выключен
+                    self.m = 1 # выводим только баз.имена
                     self.vertices_label = self.origin_vs.copy() # имена вершин
                 else: # флажок включен
-                    m = 2 # выводим баз.имя и аббревиатуру
+                    self.m = 2 # выводим баз.имя и аббревиатуру
                     # копия для динамического обновления
                     self.ver_short_latin = self.origin_vs.copy()
                     # запрос для аббревиатуры
@@ -220,18 +224,46 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         if row_sh_lt != (): # запрос не пустой
                             self.ver_short_latin[i] = row_sh_lt[0][0] # изменяем
                     self.vertices_label = self.ver_short_latin # имена вершин
-                
+            # поиск оборудования в зависимости от системы организма
+            row_eq = self.cursor.execute("SELECT Name_equipment \
+                                         FROM basic_name_indicator \
+                                         INNER JOIN (((unit_method_equip \
+                                         INNER JOIN method \
+                                         ON unit_method_equip.idMethod = method.idMethod) \
+                                         INNER JOIN equipment \
+                                         ON unit_method_equip.idEquipment = equipment.idEquipment) \
+                                         INNER JOIN formed_idicator_method \
+                                         ON method.idMethod = formed_idicator_method.idMethod) \
+                                         ON basic_name_indicator.idBasicName = formed_idicator_method.idBasicName \
+                                         GROUP BY idSystem, Name_equipment \
+                                         HAVING idSystem IN %s" \
+                                         % syst_ind(self.sys_check))
+            row_eq = self.cursor.fetchall()
+            self.equip = [] # массив с оборудованием
+            for i in range(len(row_eq)):
+                self.equip.append(row_eq[i][0]) # добавляем в массив
+            if len(self.equip) != 0: # если не пустой
+                self.equipment_ind.addItems(self.equip) # добавляем в выдающий список
+            else:
+                # иначе выводим сообщение
+                QMessageBox.information(self, 'Сообщение', "У показателей данных(ой) систем(ы) неизвестно оборудованиe для измерения")
+                self.equipment_ind.clear() # очисщаем список
+                # очищаем таблицу
+                self.table_equip_ind.setRowCount(0)
+                self.table_equip_ind.setColumnCount(0)
+            
+            
             ## ЗАПОЛНЕНИЕ ТАБЛИЦЫ ДАННЫММИ  
-            if m>0: # ненулевое количество столбцов
+            if self.m>0: # ненулевое количество столбцов
                 self.table_ind.setRowCount(self.n) # изменяем количество строк
-                self.table_ind.setColumnCount(m)  # изменяем количество столбцов
+                self.table_ind.setColumnCount(self.m)  # изменяем количество столбцов
                 text = ["Показатель","Расшифровка","Аббревиатура"] # подписи столцов
                 for i in range(self.n):
                     name1 = self.origin_vs[i] # базовое имя показателя
                     new_item_1 = QTableWidgetItem(name1) # ячейка
                     new_item_1.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать   
                     self.table_ind.setItem(i, 0, new_item_1) # добавляем в первый столбец
-                    if m >= 2: # для вывод доп.имён
+                    if self.m >= 2: # для вывод доп.имён
                         if self.lang=="Латинские названия": # если базовые имена
                             # флафок влючён - вывод аббревиатур 
                             name2 = self.ver_short_latin[i] 
@@ -245,7 +277,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         # добавляем во второй столбец
                         self.table_ind.setItem(i, 1, new_item_2)  
                         # аббревиатуры языка
-                        if self.lang != "Латинские названия" and m == 3: 
+                        if self.lang != "Латинские названия" and self.m == 3: 
                             name3 = self.new_vertices_label_sh[i] # находим аббревиатуру
                             if name1 == name3: # совпадющие
                                 name3 = "" # пустые
@@ -253,14 +285,17 @@ class Main(QMainWindow): # класс, где храняться все дейс
                             new_item_3.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать 
                             # добавлем в 3 столбцец
                             self.table_ind.setItem(i, 2, new_item_3)
-                # растягивание последнего столбца        
-                self.table_ind.horizontalHeader().setStretchLastSection(True)
+                # растягивание последнего столбца  
+                #self.table_ind.horizontalHeader().setStretchLastSection(True)
+                # автоматические подбор ширины столбца
+                self.table_ind.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+                self.table_ind.horizontalHeader().setMinimumSectionSize(0)
                 # подписи к столбца для заданного количества
-                if m == 1:
+                if self.m == 1:
                     self.table_ind.setHorizontalHeaderLabels(text[:1])
-                elif m == 2:
+                elif self.m == 2:
                     self.table_ind.setHorizontalHeaderLabels(text[:2])
-                elif m == 3:
+                elif self.m == 3:
                     self.table_ind.setHorizontalHeaderLabels(text[:])
             else: # если количество столбцов равно m = 0
                 self.table_ind.setRowCount(0)
@@ -311,16 +346,62 @@ class Main(QMainWindow): # класс, где храняться все дейс
             self.ScrollBar_big.setValue(100)
             self.table_ind.setRowCount(0)
             self.table_ind.setColumnCount(0)
+            self.table_equip_ind.setRowCount(0)
+            self.table_equip_ind.setColumnCount(0)
             self.filename = ''
             self.photo = QPixmap() #очистка изображение pixmap
             self.img.setPixmap(self.photo) 
+            self.equipment_ind.clear()
             
+    def activated_equip(self,text):
+        if text != '': # не пустой список
+            header_ind = ["Показатели", "Доп.имя"] # заголовки таблицы
+            # запрос на базовые имена по оборудованию
+            row_eq_ind = self.cursor.execute("SELECT Latin_name \
+                                    FROM basic_name_indicator \
+                                    INNER JOIN (((unit_method_equip \
+                                    INNER JOIN method ON unit_method_equip.idMethod = method.idMethod) \
+                                    INNER JOIN equipment ON unit_method_equip.idEquipment = equipment.idEquipment) \
+                                    INNER JOIN formed_idicator_method ON method.idMethod = formed_idicator_method.idMethod) \
+                                    ON basic_name_indicator.idBasicName = formed_idicator_method.idBasicName \
+                                    WHERE Name_equipment = '%s'" % text)
+            row_eq_ind = self.cursor.fetchall()
+            # количество столбцов в таблицк
+            if self.m==3 or self.check == True: # 2 столбца по условию
+                self.table_equip_ind.setColumnCount(self.m-1)
+            else: # 1 или 2 столбца
+                self.table_equip_ind.setColumnCount(self.m)
+            self.table_equip_ind.setRowCount(len(row_eq_ind)) # количество строк
+            if self.m >= 1:
+                for i in range(len(row_eq_ind)):
+                    name_eq_1 = row_eq_ind[i][0] # базовое имя
+                    new_eq_item_1 = QTableWidgetItem(name_eq_1) # ячейка
+                    new_eq_item_1.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
+                    self.table_equip_ind.setItem(i, 0, new_eq_item_1) # добавляем в первый столбец
+                    if (self.m >= 2) and self.lang != "Латинские названия": # для нелатинских названий
+                        # полное доп.название
+                        name_eq_2 = self.new_vertices_label[self.origin_vs.index(row_eq_ind[i][0])]
+                        new_eq_item_2 = QTableWidgetItem(name_eq_2) # ячейка
+                        new_eq_item_2.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
+                        self.table_equip_ind.setItem(i, 1, new_eq_item_2) # добавляем во 2 столбце
+                #self.table_equip_ind.horizontalHeader().setStretchLastSection(True)
+                # автоматические подбор ширины столбца
+                self.table_equip_ind.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
+                self.table_equip_ind.horizontalHeader().setMinimumSectionSize(0)
+                # подписи к графикам
+                if self.m == 1:
+                    self.table_equip_ind.setHorizontalHeaderLabels(header_ind[:1])
+                elif self.lang != "Латинские названия" and self.m >= 2 :
+                    self.table_equip_ind.setHorizontalHeaderLabels(header_ind[:])
+                    
     def saveas_file(self): #сохранить изображение как (смена имени или выбор другой папки)
         #выбор папки и имени для сохранения
         self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox))) #изображение pixmap
         self.name = QFileDialog.getSaveFileName(self, 'Сохранить как', '', "*.png")[0]
         self.image.save(self.name) #сохранить под новым именем
         QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
+        
+
         
 #вызов окна 
 if __name__ == '__main__': 

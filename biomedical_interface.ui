@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1626</width>
+    <width>1660</width>
     <height>857</height>
    </rect>
   </property>
@@ -88,7 +88,7 @@
      <rect>
       <x>820</x>
       <y>0</y>
-      <width>791</width>
+      <width>821</width>
       <height>791</height>
      </rect>
     </property>
@@ -137,7 +137,23 @@
           <widget class="QComboBox" name="equipment_ind"/>
          </item>
          <item>
-          <widget class="QTableWidget" name="table_equip_ind"/>
+          <widget class="QTableWidget" name="table_equip_ind">
+           <attribute name="horizontalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="horizontalHeaderDefaultSectionSize">
+            <number>140</number>
+           </attribute>
+           <attribute name="horizontalHeaderMinimumSectionSize">
+            <number>50</number>
+           </attribute>
+           <attribute name="verticalHeaderCascadingSectionResizes">
+            <bool>true</bool>
+           </attribute>
+           <attribute name="verticalHeaderMinimumSectionSize">
+            <number>50</number>
+           </attribute>
+          </widget>
          </item>
         </layout>
        </item>
@@ -165,13 +181,13 @@
         <bool>true</bool>
        </attribute>
        <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>180</number>
+        <number>200</number>
        </attribute>
        <attribute name="horizontalHeaderHighlightSections">
         <bool>true</bool>
        </attribute>
        <attribute name="horizontalHeaderMinimumSectionSize">
-        <number>49</number>
+        <number>50</number>
        </attribute>
        <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
         <bool>false</bool>
@@ -179,8 +195,11 @@
        <attribute name="verticalHeaderVisible">
         <bool>true</bool>
        </attribute>
+       <attribute name="verticalHeaderCascadingSectionResizes">
+        <bool>true</bool>
+       </attribute>
        <attribute name="verticalHeaderMinimumSectionSize">
-        <number>45</number>
+        <number>50</number>
        </attribute>
       </widget>
      </item>
@@ -263,7 +282,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1626</width>
+     <width>1660</width>
      <height>26</height>
     </rect>
    </property>

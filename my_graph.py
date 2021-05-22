@@ -6,20 +6,22 @@ Created on Tue May 11 21:08:56 2021
 """
 #import MySQLdb
 from parse_latex import parse_latex
-def my_graph(systems_ind,cursor):
+def syst_ind(systems_ind):
     systems_ind = tuple(systems_ind) # преобразуем список систем в кортеж
     if len(systems_ind) == 1: # если всего одна система
         systems_ind = str(systems_ind) # преобразуем в строку
         systems_ind = systems_ind.replace(',','') # удаляем запятую
     else: # иначе
         systems_ind = str(systems_ind) # преобразуем в строку
-        
+    return(systems_ind)
+def my_graph(systems_ind,cursor):
+    
     vertices_label = [] # названия вершин
     color_vs = [] # цвета вершин
     # все латинские имена
     row_all_lat = cursor.execute("SELECT Latin_name \
                                  FROM basic_name_indicator \
-                                 WHERE idSystem IN %s" % systems_ind)
+                                 WHERE idSystem IN %s" % syst_ind(systems_ind))
     row_all_lat = cursor.fetchall()
     
     all_latin_name = [] # массив с латинскими именами
