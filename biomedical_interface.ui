@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1538</width>
-    <height>880</height>
+    <width>1626</width>
+    <height>857</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -26,10 +26,10 @@
    <widget class="QScrollArea" name="imageScrollArea">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>821</width>
-      <height>811</height>
+      <x>10</x>
+      <y>0</y>
+      <width>800</width>
+      <height>800</height>
      </rect>
     </property>
     <property name="verticalScrollBarPolicy">
@@ -46,8 +46,8 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>798</width>
-       <height>788</height>
+       <width>777</width>
+       <height>777</height>
       </rect>
      </property>
      <widget class="QLabel" name="img">
@@ -55,8 +55,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>801</width>
-        <height>791</height>
+        <width>800</width>
+        <height>800</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -86,10 +86,10 @@
    <widget class="QWidget" name="verticalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>860</x>
-      <y>10</y>
-      <width>661</width>
-      <height>801</height>
+      <x>820</x>
+      <y>0</y>
+      <width>791</width>
+      <height>791</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -123,14 +123,35 @@
       </widget>
      </item>
      <item>
-      <widget class="QTableWidget" name="table_systems">
-       <attribute name="horizontalHeaderDefaultSectionSize">
-        <number>300</number>
-       </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QTableWidget" name="table_systems">
+         <attribute name="horizontalHeaderDefaultSectionSize">
+          <number>300</number>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <widget class="QComboBox" name="equipment_ind"/>
+         </item>
+         <item>
+          <widget class="QTableWidget" name="table_equip_ind"/>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:11pt;&quot;&gt;Отображаемые показатели&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+       </property>
       </widget>
      </item>
      <item>
-      <widget class="QTableWidget" name="table_system_ind">
+      <widget class="QTableWidget" name="table_ind">
        <property name="rowCount">
         <number>0</number>
        </property>
@@ -242,7 +263,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1538</width>
+     <width>1626</width>
      <height>26</height>
     </rect>
    </property>

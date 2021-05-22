@@ -111,6 +111,11 @@ class Main(QMainWindow): # класс, где храняться все дейс
      
     ## КНОПКА ОБНОВЛЕНИЯ ГРАФА 
     def update_graph(self):
+        self.conn = MySQLdb.connect('localhost', 'root', 'root',
+                                    'biomedical_indicators',
+                                    charset = 'utf8', 
+                                    use_unicode = True)
+        self.cursor = self.conn.cursor()
         # положение ползунков масштаба после обновления
         self.ScrollBar_small.setValue(100)
         self.ScrollBar_big.setValue(100)
@@ -218,14 +223,14 @@ class Main(QMainWindow): # класс, где храняться все дейс
                 
             ## ЗАПОЛНЕНИЕ ТАБЛИЦЫ ДАННЫММИ  
             if m>0: # ненулевое количество столбцов
-                self.table_system_ind.setRowCount(self.n) # изменяем количество строк
-                self.table_system_ind.setColumnCount(m)  # изменяем количество столбцов
+                self.table_ind.setRowCount(self.n) # изменяем количество строк
+                self.table_ind.setColumnCount(m)  # изменяем количество столбцов
                 text = ["Показатель","Расшифровка","Аббревиатура"] # подписи столцов
                 for i in range(self.n):
                     name1 = self.origin_vs[i] # базовое имя показателя
                     new_item_1 = QTableWidgetItem(name1) # ячейка
                     new_item_1.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать   
-                    self.table_system_ind.setItem(i, 0, new_item_1) # добавляем в первый столбец
+                    self.table_ind.setItem(i, 0, new_item_1) # добавляем в первый столбец
                     if m >= 2: # для вывод доп.имён
                         if self.lang=="Латинские названия": # если базовые имена
                             # флафок влючён - вывод аббревиатур 
@@ -238,7 +243,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         new_item_2 = QTableWidgetItem(name2) # ячейка
                         new_item_2.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать 
                         # добавляем во второй столбец
-                        self.table_system_ind.setItem(i, 1, new_item_2)  
+                        self.table_ind.setItem(i, 1, new_item_2)  
                         # аббревиатуры языка
                         if self.lang != "Латинские названия" and m == 3: 
                             name3 = self.new_vertices_label_sh[i] # находим аббревиатуру
@@ -247,18 +252,18 @@ class Main(QMainWindow): # класс, где храняться все дейс
                             new_item_3 = QTableWidgetItem(name3) # ячейка
                             new_item_3.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать 
                             # добавлем в 3 столбцец
-                            self.table_system_ind.setItem(i, 2, new_item_3)
+                            self.table_ind.setItem(i, 2, new_item_3)
                 # растягивание последнего столбца        
-                self.table_system_ind.horizontalHeader().setStretchLastSection(True)
+                self.table_ind.horizontalHeader().setStretchLastSection(True)
                 # подписи к столбца для заданного количества
                 if m == 1:
-                    self.table_system_ind.setHorizontalHeaderLabels(text[:1])
+                    self.table_ind.setHorizontalHeaderLabels(text[:1])
                 elif m == 2:
-                    self.table_system_ind.setHorizontalHeaderLabels(text[:2])
+                    self.table_ind.setHorizontalHeaderLabels(text[:2])
                 elif m == 3:
-                    self.table_system_ind.setHorizontalHeaderLabels(text[:])
+                    self.table_ind.setHorizontalHeaderLabels(text[:])
             else: # если количество столбцов равно m = 0
-                self.table_system_ind.setRowCount(0)
+                self.table_ind.setRowCount(0)
             
             self.output_vs = self.vertices_label.copy() # для вывода имён на графе
             # перенос имён по разделителю для удобного вывода
@@ -304,12 +309,11 @@ class Main(QMainWindow): # класс, где храняться все дейс
             self.checkBox_abbrev.setChecked(False) # флажок не влючён
             self.ScrollBar_small.setValue(100)
             self.ScrollBar_big.setValue(100)
-            self.table_system_ind.setRowCount(0)
-            self.table_system_ind.setColumnCount(0)
+            self.table_ind.setRowCount(0)
+            self.table_ind.setColumnCount(0)
             self.filename = ''
             self.photo = QPixmap() #очистка изображение pixmap
             self.img.setPixmap(self.photo) 
-            self.image = self.image.close() #закрыть изображение pillow
             
     def saveas_file(self): #сохранить изображение как (смена имени или выбор другой папки)
         #выбор папки и имени для сохранения
