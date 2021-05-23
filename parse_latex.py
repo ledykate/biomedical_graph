@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri May  7 10:39:20 2021
-
-@author: Катрина
-"""
-
 def parse_latex(string_latex):
     # символы и скобки
     delete_symbol = ['%','`','~','!','$','^','|','&','*','_','+','-','(',')',

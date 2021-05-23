@@ -1,10 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Thu May  6 13:25:05 2021
-
-@author: Катрина
-"""
-import sys # запуск окна
+import  # запуск окна
 import os # поиск файла
 import MySQLdb # библиотека для работы с MySQL
 import igraph # библиотека для работы с графами
@@ -15,7 +9,7 @@ from PIL import Image, ImageQt # библиотека по работе с из�
 ## Работа с библиотекой PyQt5 для работы интерфейса
 from PyQt5.QtWidgets import QMainWindow, QFileDialog,QApplication, QMessageBox,QVBoxLayout
 from PyQt5.uic import loadUi
-from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtGui import QPixmap, QIcon, QColor
 from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.Qt import QHeaderView
@@ -95,6 +89,9 @@ class Main(QMainWindow): # класс, где храняться все дейс
             check_box = QtWidgets.QCheckBox(self.sys_ind[i]) # создаём флажок
             item.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
             self.table_systems.setCellWidget(i, 0, check_box) # добавлем флажок в ячейку
+            # задание цвета ячейке
+            self.table_systems.item(i, 0).setBackground(QColor(self.color_orig[i][0]*255,
+                                   self.color_orig[i][1]*255, self.color_orig[i][2]*255))
         self.table_systems.horizontalHeader().setStretchLastSection(True) # растянуть последний столбец
         
     ## ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
@@ -245,8 +242,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                 # очищаем таблицу
                 self.table_equip_ind.setRowCount(0)
                 self.table_equip_ind.setColumnCount(0)
-            
-            
+
             ## ЗАПОЛНЕНИЕ ТАБЛИЦЫ ДАННЫММИ  
             if self.m>0: # ненулевое количество столбцов
                 self.table_ind.setRowCount(self.n) # изменяем количество строк
@@ -260,11 +256,21 @@ class Main(QMainWindow): # класс, где храняться все дейс
                     check_box_fl.setStyleSheet("margin-left:50%; margin-right:50%;")
                     item_fl.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
                     self.table_ind.setCellWidget(i, 0, check_box_fl) # добавлем флажок в ячейку
-                    
+                                       
                     name1 = self.origin_vs[i] # базовое имя показателя
                     new_item_1 = QtWidgets.QTableWidgetItem(name1) # ячейка
                     new_item_1.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать   
                     self.table_ind.setItem(i, 1, new_item_1) # добавляем в первый столбец
+                    
+                    row_color_ind = self.cursor.execute("SELECT idSystem \
+                                         FROM basic_name_indicator \
+                                         WHERE Latin_name = '%s'" \
+                                         % name1)
+                    row_color_ind = self.cursor.fetchall()
+                    color_ind = row_color_ind[0][0]
+                    self.table_ind.item(i, 1).setBackground(QColor(self.color_orig[color_ind-1][0]*255, 
+                                       self.color_orig[color_ind-1][1]*255,self.color_orig[color_ind-1][2]*255))
+                    
                     if self.m >= 2: # для вывод доп.имён
                         if self.lang=="Латинские названия": # если базовые имена
                             # флафок влючён - вывод аббревиатур 
@@ -325,7 +331,6 @@ class Main(QMainWindow): # класс, где храняться все дейс
     def plot_graph(self):
         global click_update
         if click_update == 1: # если данные обновлены
-            #QMessageBox.information(self, 'Сообщение', "ОК")
             is_check_ind = [] # индексы выбранных показателей
             latin_name_ch = [] # базовые имена выбранных показателей
             for i in range(self.n):
@@ -335,12 +340,13 @@ class Main(QMainWindow): # класс, где храняться все дейс
                     latin_name_ch.append(self.table_ind.item(i, 1).text()) # добавляем базовое имя
             if len(latin_name_ch) == 0: # не выбран ни один флажок
                 QMessageBox.information(self, 'Сообщение', "Вы не выбрали ни одного показателя.\nВеберете хотя бы один")
+                self.filename = ''
+                self.photo = QPixmap()  # очистка изображение pixmap
+                self.img.setPixmap(self.photo)
             else:
                 # подключение к БД
                 self.conn = MySQLdb.connect('localhost', 'root', 'root',
-                            'biomedical_indicators',
-                            charset = 'utf8', 
-                            use_unicode = True)
+                                            'biomedical_indicators',charset = 'utf8',use_unicode = True)
                 self.cursor = self.conn.cursor()
                 # количество показателей, список вершин, цвет вершин, список рёбер
                 n_ind, vertices_label_ind, color_vs, edges_graph = my_graph(latin_name_ch,self.cursor)
@@ -420,7 +426,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
             QMessageBox.information(self, 'Сообщение', "Ещё не введены данные")
             
     # просмотр показателей, снятых на оборудовании        
-    def activated_equip(self,text):
+    def activated_equip(self, text):
         if text != '': # не пустой список
             header_ind = ["Показатели", "Доп.имя"] # заголовки таблицы
             # запрос на базовые имена по оборудованию
@@ -445,6 +451,16 @@ class Main(QMainWindow): # класс, где храняться все дейс
                     new_eq_item_1 = QtWidgets.QTableWidgetItem(name_eq_1) # ячейка
                     new_eq_item_1.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
                     self.table_equip_ind.setItem(i, 0, new_eq_item_1) # добавляем в первый столбец
+                    
+                    row_color_ind_eq = self.cursor.execute("SELECT idSystem \
+                                         FROM basic_name_indicator \
+                                         WHERE Latin_name = '%s'" \
+                                         % name_eq_1)
+                    row_color_ind_eq = self.cursor.fetchall()
+                    color_ind = row_color_ind_eq[0][0]
+                    self.table_equip_ind.item(i, 0).setBackground(QColor(self.color_orig[color_ind-1][0]*255,
+                                                                         self.color_orig[color_ind-1][1]*255,self.color_orig[color_ind-1][2]*255))
+                    
                     if (self.m >= 2) and self.lang != "Латинские названия": # для нелатинских названий
                         # полное доп.название
                         name_eq_2 = self.new_vertices_label[self.origin_vs.index(row_eq_ind[i][0])]

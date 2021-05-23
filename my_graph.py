@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue May 11 21:08:56 2021
-
-@author: Катрина
-"""
 #import MySQLdb
 from parse_latex import parse_latex
 
