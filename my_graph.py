@@ -28,22 +28,6 @@ def my_indicator(systems_ind,cursor):
     
     
 def my_graph(all_latin_name,cursor):
-    '''
-    vertices_label = [] # названия вершин
-    color_vs = [] # цвета вершин
-    # все латинские имена
-    row_all_lat = cursor.execute("SELECT Latin_name \
-                                 FROM basic_name_indicator \
-                                 WHERE idSystem IN %s" % syst_ind(systems_ind))
-    row_all_lat = cursor.fetchall()
-    
-    all_latin_name = [] # массив с латинскими именами
-    # добавление в массив всех элементов запроса
-    for i in range(len(row_all_lat)):
-        all_latin_name.append(row_all_lat[i][0])
-        color_vs.append([0,0.749,1]) # цвет у вершин голубой
-    n = len(all_latin_name) # количество всех показателей 
-    '''
     vertices_label = [] # названия вершин
     color_vs = [] # цвета вершин
     for i in range(len(all_latin_name)):
