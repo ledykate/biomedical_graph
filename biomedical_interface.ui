@@ -167,6 +167,18 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="checkBox_all_ind">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Выбрать все показатели</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QTableWidget" name="table_ind">
        <property name="rowCount">
         <number>0</number>

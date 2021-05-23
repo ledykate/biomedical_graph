@@ -6,6 +6,7 @@ Created on Tue May 11 21:08:56 2021
 """
 #import MySQLdb
 from parse_latex import parse_latex
+
 def syst_ind(systems_ind):
     systems_ind = tuple(systems_ind) # преобразуем список систем в кортеж
     if len(systems_ind) == 1: # если всего одна система
@@ -14,6 +15,24 @@ def syst_ind(systems_ind):
     else: # иначе
         systems_ind = str(systems_ind) # преобразуем в строку
     return(systems_ind)
+    
+def my_indicator(systems_ind,cursor): 
+    vertices_label = [] # названия вершин
+    # все латинские имена
+    row_all_lat = cursor.execute("SELECT Latin_name \
+                                 FROM basic_name_indicator \
+                                 WHERE idSystem IN %s" % syst_ind(systems_ind))
+    row_all_lat = cursor.fetchall()
+    
+    all_latin_name = [] # массив с латинскими именами
+    # добавление в массив всех элементов запроса
+    for i in range(len(row_all_lat)):
+        all_latin_name.append(row_all_lat[i][0])
+    n = len(all_latin_name) # количество всех показателей 
+    vertices_label += all_latin_name # добавляем в подписи к вершинам
+    return(n,vertices_label)
+    
+    
 def my_graph(systems_ind,cursor):
     
     vertices_label = [] # названия вершин

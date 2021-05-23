@@ -9,7 +9,7 @@ import os # поиск файла
 import MySQLdb # библиотека для работы с MySQL
 import igraph # библиотека для работы с графами
 import numpy as np # формирование случайно последовательности
-from my_graph import my_graph, syst_ind # функция для построения графа
+from my_graph import my_indicator, my_graph, syst_ind # функция для построения графа
 
 from PIL import Image, ImageQt # библиотека по работе с изображениями PIL (pillow)
 ## Работа с библиотекой PyQt5 для работы интерфейса
@@ -43,7 +43,11 @@ class Main(QMainWindow): # класс, где храняться все дейс
         self.image = None #изображение (pillow)
         self.photo = None #изображение в виджите (pixmap)
         
-        self.pushButton_update.clicked.connect(self.update_graph) # кнопка обновления графа
+        global click_update
+        click_update = 0 # переменная отвечающая за корректное нажатие кнопки и данных
+        
+        self.pushButton_update.clicked.connect(self.update_ind) # кнопка обновления данных
+        self.pushButton_plot_graph.clicked.connect(self.plot_graph)
         self.ScrollBar_big.valueChanged.connect(self.big) #увелечение изображения 
         self.ScrollBar_small.valueChanged.connect(self.small) #уменьшение изображения
         self.saveas_graph.triggered.connect(self.saveas_file) #сохранить/сохранить как
@@ -112,8 +116,9 @@ class Main(QMainWindow): # класс, где храняться все дейс
         self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize((x, y)))) #изображение pixmap
         self.img.setPixmap(self.photo)  #добавляем на виджет
      
-    ## КНОПКА ОБНОВЛЕНИЯ ГРАФА 
-    def update_graph(self):
+    ## КНОПКА ОБНОВЛЕНИЯ
+    def update_ind(self):
+        global click_update
         self.conn = MySQLdb.connect('localhost', 'root', 'root',
                                     'biomedical_indicators',
                                     charset = 'utf8', 
@@ -130,6 +135,9 @@ class Main(QMainWindow): # класс, где храняться все дейс
             if k == True: # если выбран
                 self.sys_check.append(i+1) # добавляем в массив
         if len(self.sys_check) != 0: # если выбраны флажки
+            
+            click_update = 1
+            
             # данные, которые получены из функции my_graph:
             # количество показателей, подписи вершин, цвет вершин, список рёбер
             self.n, self.vertices_label, self.color_vs, self.edges_graph = my_graph(self.sys_check,self.cursor)
@@ -309,6 +317,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
             else: # если количество столбцов равно m = 0
                 self.table_ind.setRowCount(0)
             
+            '''
             self.output_vs = self.vertices_label.copy() # для вывода имён на графе
             # перенос имён по разделителю для удобного вывода
             for i in range(len(self.output_vs)):
@@ -344,8 +353,10 @@ class Main(QMainWindow): # класс, где храняться все дейс
             self.image = Image.open(self.filename) # открыть как изображение
             self.photo = QPixmap(ImageQt.toqpixmap(self.image))
             self.img.setPixmap(self.photo) #вывести изображение
-            
+            '''
+            #click_update = 0
         else: # не выбран ни одни флажок
+            click_update = 0
             # сообщение
             QMessageBox.information(self, 'Предупреждение',
                                             "Вы не выбрали системы организма!")
@@ -361,7 +372,15 @@ class Main(QMainWindow): # класс, где храняться все дейс
             self.photo = QPixmap() #очистка изображение pixmap
             self.img.setPixmap(self.photo) 
             self.equipment_ind.clear()
+        print(click_update)
+        
+    def plot_graph(self):
+        if click_update == 1:
+            QMessageBox.information(self, 'Сообщение', "ОК")
+        else:
+            QMessageBox.information(self, 'Сообщение', "НЕ ОК")
             
+    
     def activated_equip(self,text):
         if text != '': # не пустой список
             header_ind = ["Показатели", "Доп.имя"] # заголовки таблицы
