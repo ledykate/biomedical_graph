@@ -1,4 +1,4 @@
-import  # запуск окна
+import sys # запуск окна
 import os # поиск файла
 import MySQLdb # библиотека для работы с MySQL
 import igraph # библиотека для работы с графами
