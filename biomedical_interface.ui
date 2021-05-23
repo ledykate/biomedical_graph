@@ -9,7 +9,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1660</width>
+    <width>1656</width>
     <height>857</height>
    </rect>
   </property>
@@ -108,7 +108,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QComboBox" name="language_indicator"/>
+      <widget class="QComboBox" name="language_indicator">
+       <property name="font">
+        <font>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QCheckBox" name="checkBox_abbrev">
@@ -167,16 +173,20 @@
       </widget>
      </item>
      <item>
-      <widget class="QCheckBox" name="checkBox_all_ind">
-       <property name="font">
-        <font>
-         <pointsize>10</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Выбрать все показатели</string>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <widget class="QCheckBox" name="checkBox_all_ind">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Выбрать все показатели</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item>
       <widget class="QTableWidget" name="table_ind">
@@ -306,7 +316,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1660</width>
+     <width>1656</width>
      <height>26</height>
     </rect>
    </property>

@@ -17,7 +17,7 @@ def syst_ind(systems_ind):
     return(systems_ind)
     
 def my_indicator(systems_ind,cursor): 
-    vertices_label = [] # названия вершин
+    #vertices_label = [] # названия вершин
     # все латинские имена
     row_all_lat = cursor.execute("SELECT Latin_name \
                                  FROM basic_name_indicator \
@@ -29,12 +29,12 @@ def my_indicator(systems_ind,cursor):
     for i in range(len(row_all_lat)):
         all_latin_name.append(row_all_lat[i][0])
     n = len(all_latin_name) # количество всех показателей 
-    vertices_label += all_latin_name # добавляем в подписи к вершинам
-    return(n,vertices_label)
+    #vertices_label += all_latin_name # добавляем в подписи к вершинам
+    return(n,all_latin_name)
     
     
-def my_graph(systems_ind,cursor):
-    
+def my_graph(all_latin_name,cursor):
+    '''
     vertices_label = [] # названия вершин
     color_vs = [] # цвета вершин
     # все латинские имена
@@ -49,7 +49,12 @@ def my_graph(systems_ind,cursor):
         all_latin_name.append(row_all_lat[i][0])
         color_vs.append([0,0.749,1]) # цвет у вершин голубой
     n = len(all_latin_name) # количество всех показателей 
-    
+    '''
+    vertices_label = [] # названия вершин
+    color_vs = [] # цвета вершин
+    for i in range(len(all_latin_name)):
+        color_vs.append([0,0.749,1]) # цвет у вершин голубой
+    n = len(all_latin_name) # количество всех показателей 
     rows = cursor.execute("SELECT Latin_name, Calculation_form \
                                 FROM (basic_name_indicator \
                                 INNER JOIN unit_form_basic \
