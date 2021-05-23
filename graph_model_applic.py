@@ -89,8 +89,8 @@ class Main(QMainWindow): # класс, где храняться все дейс
             self.table_systems.setItem(i, 0, item) # обновляем ячейку
             check_box = QtWidgets.QCheckBox(self.sys_ind[i]) # создаём флажок
             self.table_systems.setCellWidget(i, 0, check_box) # добавлем флажок в ячейку
-            cell = QtWidgets.QTableWidgetItem() # пересоздание ячейки
-            cell.setFlags(QtCore.Qt.ItemIsEnabled) # запрет на редактирование
+            #cell = QtWidgets.QTableWidgetItem() # пересоздание ячейки
+            #cell.setFlags(QtCore.Qt.ItemIsEnabled) # запрет на редактирование
         self.table_systems.horizontalHeader().setStretchLastSection(True) # растянуть последний столбец
         
     ## ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
@@ -256,13 +256,22 @@ class Main(QMainWindow): # класс, где храняться все дейс
             ## ЗАПОЛНЕНИЕ ТАБЛИЦЫ ДАННЫММИ  
             if self.m>0: # ненулевое количество столбцов
                 self.table_ind.setRowCount(self.n) # изменяем количество строк
-                self.table_ind.setColumnCount(self.m)  # изменяем количество столбцов
-                text = ["Показатель","Расшифровка","Аббревиатура"] # подписи столцов
+                self.table_ind.setColumnCount(self.m+1)  # изменяем количество столбцов
+                text = ["Выбрать", "Показатель","Расшифровка","Аббревиатура"] # подписи столцов
                 for i in range(self.n):
+                    # вставка флажков в таблицк
+                    item_fl = QTableWidgetItem() # создаём ячейку
+                    self.table_ind.setItem(i, 0, item_fl) # обновляем ячейку
+                    check_box_fl = QtWidgets.QCheckBox() # создаём флажок
+                    # центрируем флажок
+                    check_box_fl.setStyleSheet("margin-left:50%; margin-right:50%;")
+                    self.table_ind.setCellWidget(i, 0, check_box_fl) # добавлем флажок в ячейку
+                    
+                    
                     name1 = self.origin_vs[i] # базовое имя показателя
                     new_item_1 = QTableWidgetItem(name1) # ячейка
                     new_item_1.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать   
-                    self.table_ind.setItem(i, 0, new_item_1) # добавляем в первый столбец
+                    self.table_ind.setItem(i, 1, new_item_1) # добавляем в первый столбец
                     if self.m >= 2: # для вывод доп.имён
                         if self.lang=="Латинские названия": # если базовые имена
                             # флафок влючён - вывод аббревиатур 
@@ -275,7 +284,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         new_item_2 = QTableWidgetItem(name2) # ячейка
                         new_item_2.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать 
                         # добавляем во второй столбец
-                        self.table_ind.setItem(i, 1, new_item_2)  
+                        self.table_ind.setItem(i, 2, new_item_2)  
                         # аббревиатуры языка
                         if self.lang != "Латинские названия" and self.m == 3: 
                             name3 = self.new_vertices_label_sh[i] # находим аббревиатуру
@@ -284,7 +293,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                             new_item_3 = QTableWidgetItem(name3) # ячейка
                             new_item_3.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать 
                             # добавлем в 3 столбцец
-                            self.table_ind.setItem(i, 2, new_item_3)
+                            self.table_ind.setItem(i, 3, new_item_3)
                 # растягивание последнего столбца  
                 #self.table_ind.horizontalHeader().setStretchLastSection(True)
                 # автоматические подбор ширины столбца
@@ -292,9 +301,9 @@ class Main(QMainWindow): # класс, где храняться все дейс
                 self.table_ind.horizontalHeader().setMinimumSectionSize(0)
                 # подписи к столбца для заданного количества
                 if self.m == 1:
-                    self.table_ind.setHorizontalHeaderLabels(text[:1])
-                elif self.m == 2:
                     self.table_ind.setHorizontalHeaderLabels(text[:2])
+                elif self.m == 2:
+                    self.table_ind.setHorizontalHeaderLabels(text[:3])
                 elif self.m == 3:
                     self.table_ind.setHorizontalHeaderLabels(text[:])
             else: # если количество столбцов равно m = 0
