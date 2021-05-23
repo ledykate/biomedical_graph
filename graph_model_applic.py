@@ -13,7 +13,7 @@ from my_graph import my_indicator, my_graph, syst_ind # функция для п
 
 from PIL import Image, ImageQt # библиотека по работе с изображениями PIL (pillow)
 ## Работа с библиотекой PyQt5 для работы интерфейса
-from PyQt5.QtWidgets import QMainWindow, QFileDialog,QApplication, QMessageBox,QVBoxLayout,QTableWidgetItem
+from PyQt5.QtWidgets import QMainWindow, QFileDialog,QApplication, QMessageBox,QVBoxLayout
 from PyQt5.uic import loadUi
 from PyQt5.QtGui import QPixmap, QIcon
 from PyQt5.QtCore import Qt
@@ -32,6 +32,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                                     use_unicode = True)
         self.cursor = self.conn.cursor()
         self.setWindowIcon(QIcon('icon.png')) # иконка приложения
+        
         # ползунок для просмотра изображения
         lay = QVBoxLayout(self.scrollAreaWidgetContents)
         lay.setContentsMargins(0, 0, 0, 0)
@@ -43,19 +44,17 @@ class Main(QMainWindow): # класс, где храняться все дейс
         self.image = None #изображение (pillow)
         self.photo = None #изображение в виджите (pixmap)
         
-        global click_update
+        global click_update # глобальная переменная
         click_update = 0 # переменная отвечающая за корректное нажатие кнопки и данных
         
         self.pushButton_update.clicked.connect(self.update_ind) # кнопка обновления данных
-        self.checkBox_all_ind.stateChanged.connect(self.change_all)
-        #self.pushButton_del_check_ind.clicked.connect(self.delete_all)
-        self.pushButton_plot_graph.clicked.connect(self.plot_graph)
+        self.checkBox_all_ind.stateChanged.connect(self.change_all) # выбор всех показателей
+        self.pushButton_plot_graph.clicked.connect(self.plot_graph) # кнопка построения графа
         self.ScrollBar_big.valueChanged.connect(self.big) #увелечение изображения 
         self.ScrollBar_small.valueChanged.connect(self.small) #уменьшение изображения
         self.saveas_graph.triggered.connect(self.saveas_file) #сохранить/сохранить как
-        # вывод показателей по оборудованию
-        self.equipment_ind.currentTextChanged.connect(self.activated_equip) 
-        self.equip = []
+        self.equipment_ind.currentTextChanged.connect(self.activated_equip)  # вывод показателей по оборудованию
+        
         # задание значений для выпадающего списка
         # запрос из БД
         rows = self.cursor.execute("SELECT Name_language \
@@ -86,7 +85,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
             col = np.random.sample(3) # рандомное значение от 0 до 1 (палитра RGB)
             self.color_orig.append(col.tolist()) # преобразование в список
             
-        # создание флажков в таблице
+        # создание флажков в таблице с системами
         self.table_systems.setRowCount(len(self.sys_ind)) # изменяем количество строк
         self.table_systems.setColumnCount(1)  # изменяем количество столбцов  
         self.table_systems.setHorizontalHeaderLabels(["Система организма"]) # заголовок столбца
@@ -94,9 +93,8 @@ class Main(QMainWindow): # класс, где храняться все дейс
             item = QtWidgets.QTableWidgetItem() # создаём ячейку
             self.table_systems.setItem(i, 0, item) # обновляем ячейку
             check_box = QtWidgets.QCheckBox(self.sys_ind[i]) # создаём флажок
+            item.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
             self.table_systems.setCellWidget(i, 0, check_box) # добавлем флажок в ячейку
-            #cell = QtWidgets.QTableWidgetItem() # пересоздание ячейки
-            #cell.setFlags(QtCore.Qt.ItemIsEnabled) # запрет на редактирование
         self.table_systems.horizontalHeader().setStretchLastSection(True) # растянуть последний столбец
         
     ## ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
@@ -120,7 +118,8 @@ class Main(QMainWindow): # класс, где храняться все дейс
      
     ## КНОПКА ОБНОВЛЕНИЯ
     def update_ind(self):
-        global click_update
+        global click_update # глобальная
+        # соеденение с базой
         self.conn = MySQLdb.connect('localhost', 'root', 'root',
                                     'biomedical_indicators',
                                     charset = 'utf8', 
@@ -129,35 +128,20 @@ class Main(QMainWindow): # класс, где храняться все дейс
         # положение ползунков масштаба после обновления
         self.ScrollBar_small.setValue(100)
         self.ScrollBar_big.setValue(100)
-        self.equipment_ind.clear()
-        self.sys_check = [] # выбранные флажки
-        # считываение какие флажки выбраны
+        self.equipment_ind.clear() # очистка списка с оборудованием
+        self.sys_check = [] # выбранные флажки систем
+        # считываение какие флажки системы выбраны 
         for i in range(len(self.sys_ind)):
             k = (self.table_systems.cellWidget(i, 0)).isChecked() # состояние флажка
             if k == True: # если выбран
                 self.sys_check.append(i+1) # добавляем в массив
         if len(self.sys_check) != 0: # если выбраны флажки
-            
             click_update = 1
-            
             # данные, которые получены из функции my_graph:
-            # количество показателей, подписи вершин, цвет вершин, список рёбер
-            #self.n, self.vertices_label, self.color_vs, self.edges_graph = my_graph(self.sys_check,self.cursor)
+            # количество показателей, подписи вершин
             self.n, self.vertices_label = my_indicator(self.sys_check,self.cursor)
             self.origin_vs = self.vertices_label.copy() # копия исходнных данных
-            
-            # задание цвета для показателей
-            '''
-            for j in range(len(self.sys_check)):
-                for i in range(self.n):
-                    row_ind_sys = self.cursor.execute("SELECT idSystem \
-                                     FROM basic_name_indicator \
-                                     WHERE Latin_name = '%s'" \
-                                     % self.origin_vs[i])
-                    row_ind_sys = self.cursor.fetchall()
-                    if self.sys_check[j] == row_ind_sys[0][0]: # если показатель есть
-                        self.color_vs[i] = self.color_orig[self.sys_check[j]-1] # задаём цвет
-            '''
+
             self.check = self.checkBox_abbrev.isChecked() # значение флажка включения аббревиатуры
             self.lang = self.language_indicator.currentText() # значение языка из выпадающего списка
         
@@ -269,17 +253,16 @@ class Main(QMainWindow): # класс, где храняться все дейс
                 self.table_ind.setColumnCount(self.m+1)  # изменяем количество столбцов
                 text = ["Выбрать", "Показатель","Расшифровка","Аббревиатура"] # подписи столцов
                 for i in range(self.n):
-                    # вставка флажков в таблицк
-                    item_fl = QTableWidgetItem() # создаём ячейку
-                    self.table_ind.setItem(i, 0, item_fl) # обновляем ячейку
+                    # вставка флажков в таблицу для выбора показателя
+                    item_fl = QtWidgets.QTableWidgetItem() # создаём ячейку
                     check_box_fl = QtWidgets.QCheckBox() # создаём флажок
                     # центрируем флажок
                     check_box_fl.setStyleSheet("margin-left:50%; margin-right:50%;")
+                    item_fl.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
                     self.table_ind.setCellWidget(i, 0, check_box_fl) # добавлем флажок в ячейку
                     
-                    
                     name1 = self.origin_vs[i] # базовое имя показателя
-                    new_item_1 = QTableWidgetItem(name1) # ячейка
+                    new_item_1 = QtWidgets.QTableWidgetItem(name1) # ячейка
                     new_item_1.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать   
                     self.table_ind.setItem(i, 1, new_item_1) # добавляем в первый столбец
                     if self.m >= 2: # для вывод доп.имён
@@ -291,7 +274,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                             name2 = self.new_vertices_label[i] # доп.имя
                             if name1 == name2: # если есть совпадения
                                 name2 = "" # делаем ячейку пустой
-                        new_item_2 = QTableWidgetItem(name2) # ячейка
+                        new_item_2 = QtWidgets.QTableWidgetItem(name2) # ячейка
                         new_item_2.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать 
                         # добавляем во второй столбец
                         self.table_ind.setItem(i, 2, new_item_2)  
@@ -300,7 +283,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                             name3 = self.new_vertices_label_sh[i] # находим аббревиатуру
                             if name1 == name3: # совпадющие
                                 name3 = "" # пустые
-                            new_item_3 = QTableWidgetItem(name3) # ячейка
+                            new_item_3 = QtWidgets.QTableWidgetItem(name3) # ячейка
                             new_item_3.setFlags(QtCore.Qt.ItemIsEnabled) #запрещаем редактировать 
                             # добавлем в 3 столбцец
                             self.table_ind.setItem(i, 3, new_item_3)
@@ -318,44 +301,6 @@ class Main(QMainWindow): # класс, где храняться все дейс
                     self.table_ind.setHorizontalHeaderLabels(text[:])
             else: # если количество столбцов равно m = 0
                 self.table_ind.setRowCount(0)
-            
-            '''
-            self.output_vs = self.vertices_label.copy() # для вывода имён на графе
-            # перенос имён по разделителю для удобного вывода
-            for i in range(len(self.output_vs)):
-                text_label = self.output_vs[i]
-                self.output_vs[i] = text_label.replace(" ", "\n") # разделитель пробел
-            for i in range(len(self.output_vs)):
-                text_label = self.output_vs[i]
-                self.output_vs[i] = text_label.replace("-", "\n") # разделитель дефис
-            self.g.vs["label"] = self.output_vs # подписи вершин
-            self.g.vs["color"] = self.color_vs # цвета вершин
-            self.g.vs["size"] = 70 # размер вершин
-            self.g.vs["label_size"] = 10 # размер подписи
-            self.g.add_edges(self.edges_graph) # добавление рёбер
-            self.g.es["width"] = 1.2 # ширина ребра
-            # нумерация рёбер
-            self.g.es["weight"] = [i+1 for i in range(len(self.edges_graph))]
-            self.g.es["label"] = self.g.es["weight"]
-            # стиль отображения графа
-            self.layout = self.g.layout_fruchterman_reingold()
-            
-            if len(self.sys_check) < round(len(self.sys_ind)/3):
-                self.bbox = (1050,1050)
-            elif round(len(self.sys_ind)/3) <= len(self.sys_check) <= round(len(self.sys_ind)*2/3):
-                self.bbox = (1850,1850)
-            else:
-                self.bbox = (2250,2250)
-                
-            # построение графа
-            igraph.plot(self.g, "test_indic.png", layout = self.layout, 
-                        bbox = self.bbox, margin = (45, 90, 45, 90))
-            # вывод изображения с графом
-            self.filename = os.path.abspath("test_indic.png")
-            self.image = Image.open(self.filename) # открыть как изображение
-            self.photo = QPixmap(ImageQt.toqpixmap(self.image))
-            self.img.setPixmap(self.photo) #вывести изображение
-            '''
             #click_update = 0
         else: # не выбран ни одни флажок
             click_update = 0
@@ -376,29 +321,30 @@ class Main(QMainWindow): # класс, где храняться все дейс
             self.equipment_ind.clear()
         #print(click_update)
         
+    # ПОСТРОЕНИЕ ГРАФА    
     def plot_graph(self):
         global click_update
-        if click_update == 1:
-            QMessageBox.information(self, 'Сообщение', "ОК")
-            is_check_ind = []
-            latin_name_ch = []
+        if click_update == 1: # если данные обновлены
+            #QMessageBox.information(self, 'Сообщение', "ОК")
+            is_check_ind = [] # индексы выбранных показателей
+            latin_name_ch = [] # базовые имена выбранных показателей
             for i in range(self.n):
                 k = (self.table_ind.cellWidget(i, 0)).isChecked() # состояние флажка
-                if k == 1:
-                    is_check_ind.append(i)
-                    latin_name_ch.append(self.table_ind.item(i, 1).text())
-            if len(latin_name_ch) == 0:
+                if k == 1: # если выбран
+                    is_check_ind.append(i) # добавляем инднкс
+                    latin_name_ch.append(self.table_ind.item(i, 1).text()) # добавляем базовое имя
+            if len(latin_name_ch) == 0: # не выбран ни один флажок
                 QMessageBox.information(self, 'Сообщение', "Вы не выбрали ни одного показателя.\nВеберете хотя бы один")
             else:
+                # подключение к БД
                 self.conn = MySQLdb.connect('localhost', 'root', 'root',
                             'biomedical_indicators',
                             charset = 'utf8', 
                             use_unicode = True)
                 self.cursor = self.conn.cursor()
+                # количество показателей, список вершин, цвет вершин, список рёбер
                 n_ind, vertices_label_ind, color_vs, edges_graph = my_graph(latin_name_ch,self.cursor)
-                #vertices_label_graph = 
                 # задание цвета для показателей
-                
                 for j in range(len(self.sys_check)):
                     for i in range(n_ind):
                         row_ind_sys = self.cursor.execute("SELECT idSystem \
@@ -408,89 +354,72 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         row_ind_sys = self.cursor.fetchall()
                         if self.sys_check[j] == row_ind_sys[0][0]: # если показатель есть
                             color_vs[i] = self.color_orig[self.sys_check[j]-1] # задаём цвет
+                # подписи к вершинам в соотвествии с фильтрами            
                 vertices_label_graph = [0 for i in range(len(vertices_label_ind))]
                 vertices_label_graph[n_ind:] = vertices_label_ind[n_ind:]
-                if self.lang != "Латинские названия":
-                    if self.check == False:
+                if self.lang != "Латинские названия": # нелатинское название
+                    if self.check == False: # без аббревиатуры
                         vertices_label_graph[:n_ind] = [self.new_vertices_label[i] for i in is_check_ind]
-                    else:
+                    else: # с аббревиатурой
                         vertices_label_graph[:n_ind] = [self.new_vertices_label_sh[i] for i in is_check_ind] 
-                else:
-                    if self.check == False:
+                else: # латинское название
+                    if self.check == False: # без аббревиатуры
                         vertices_label_graph = vertices_label_ind.copy()
-                    else:
+                    else: # с аббревиатурой
                         vertices_label_graph[:n_ind] = [self.ver_short_latin[i] for i in is_check_ind]
                 
-                
-                
+                ### ПОСТРОЕНИЕ графа
                 self.g = igraph.Graph(directed = True) # создание направленного графа
                 self.g.add_vertices(len(vertices_label_ind)) # количество вершин
-                self.output_vs = vertices_label_graph.copy() # для вывода имён на графе
+                output_vs = vertices_label_graph.copy() # для вывода имён на графе
                 # перенос имён по разделителю для удобного вывода
-                for i in range(len(self.output_vs)):
-                    text_label = self.output_vs[i]
-                    self.output_vs[i] = text_label.replace(" ", "\n") # разделитель пробел
-                for i in range(len(self.output_vs)):
-                    text_label = self.output_vs[i]
-                    self.output_vs[i] = text_label.replace("-", "\n") # разделитель дефис
-                self.g.vs["label"] = self.output_vs # подписи вершин
+                for i in range(len(output_vs)):
+                    text_label = output_vs[i]
+                    output_vs[i] = text_label.replace(" ", "\n") # разделитель пробел
+                for i in range(len(output_vs)):
+                    text_label = output_vs[i]
+                    output_vs[i] = text_label.replace("-", "\n") # разделитель дефис
+                    
+                self.g.vs["label"] = output_vs # подписи вершин
                 self.g.vs["color"] = color_vs # цвета вершин
                 self.g.vs["size"] = 70 # размер вершин
                 self.g.vs["label_size"] = 10 # размер подписи
                 self.g.add_edges(edges_graph) # добавление рёбер
                 self.g.es["width"] = 1.2 # ширина ребра
                 # нумерация рёбер
-                #self.g.es["weight"] = [i+1 for i in range(len(self.edges_graph))]
-                #self.g.es["label"] = self.g.es["weight"]
+                self.g.es["weight"] = [i+1 for i in range(len(edges_graph))]
+                self.g.es["label"] = self.g.es["weight"]
+                
+                # размер изображения
+                b = int(self.spinBox_bbox_graph.value())
+                bbox = (b,b)
                 # стиль отображения графа
                 self.layout = self.g.layout_fruchterman_reingold()
+                
                 # построение графа
                 igraph.plot(self.g, "test_indic.png", layout = self.layout, 
-                            bbox = (800,800), margin = (50, 100, 50, 100))
+                            bbox = bbox, margin = (50, 100, 50, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
                 self.image = Image.open(self.filename) # открыть как изображение
                 self.photo = QPixmap(ImageQt.toqpixmap(self.image))
                 self.img.setPixmap(self.photo) #вывести изображение
-            
-                #click_update = 0
-                #print(vertices_label_ind)
-                #print(edges_graph)
-            #print(latin_name_ch)       
-            #print(is_check_ind)  
         else:
-            QMessageBox.information(self, 'Сообщение', "НЕ ОК")
-    '''    
-    def indic(self):
-        self.al = 0
-        for i in range(self.n):
-                k = (self.table_ind.cellWidget(i, 0)).isChecked()
-                if k == 1:
-                    self.al += 1
-        if self.checkBox_all_ind.isChecked() == True and self.al != self.n:
-            self.checkBox_all_ind.setChecked(False)
-    '''   
+            QMessageBox.information(self, 'Сообщение', "Вы не обновили данные")
+
+    # выбор всех показателей
     def change_all(self, state):
-        if click_update == 1:
-            
+        if click_update == 1: # если показтели выведены
             for i in range(self.n):
-                if state == Qt.Checked:
+                if state == Qt.Checked: # выбран, то все флажки показателей выбраны
                     self.table_ind.cellWidget(i, 0).setChecked(True)
-                else:
+                else: # снят - сняты все флажки
                     self.table_ind.cellWidget(i, 0).setChecked(False)
         else:
             self.checkBox_all_ind.setChecked(False)
             QMessageBox.information(self, 'Сообщение', "Ещё не введены данные")
             
-    def delete_all(self):
-        if click_update == 1:
-            self.checkBox_all_ind.setChecked(False)
-            for i in range(self.n):
-                self.table_ind.cellWidget(i, 0).setChecked(False)
-        else:
-            #self.checkBox_all_ind.setChecked(False)
-            QMessageBox.information(self, 'Сообщение', "Ещё не введены данные")
-            
+    # просмотр показателей, снятых на оборудовании        
     def activated_equip(self,text):
         if text != '': # не пустой список
             header_ind = ["Показатели", "Доп.имя"] # заголовки таблицы
@@ -513,13 +442,13 @@ class Main(QMainWindow): # класс, где храняться все дейс
             if self.m >= 1:
                 for i in range(len(row_eq_ind)):
                     name_eq_1 = row_eq_ind[i][0] # базовое имя
-                    new_eq_item_1 = QTableWidgetItem(name_eq_1) # ячейка
+                    new_eq_item_1 = QtWidgets.QTableWidgetItem(name_eq_1) # ячейка
                     new_eq_item_1.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
                     self.table_equip_ind.setItem(i, 0, new_eq_item_1) # добавляем в первый столбец
                     if (self.m >= 2) and self.lang != "Латинские названия": # для нелатинских названий
                         # полное доп.название
                         name_eq_2 = self.new_vertices_label[self.origin_vs.index(row_eq_ind[i][0])]
-                        new_eq_item_2 = QTableWidgetItem(name_eq_2) # ячейка
+                        new_eq_item_2 = QtWidgets.QTableWidgetItem(name_eq_2) # ячейка
                         new_eq_item_2.setFlags(QtCore.Qt.ItemIsEnabled) # запрещаем редактировать
                         self.table_equip_ind.setItem(i, 1, new_eq_item_2) # добавляем во 2 столбце
                 #self.table_equip_ind.horizontalHeader().setStretchLastSection(True)
@@ -538,8 +467,6 @@ class Main(QMainWindow): # класс, где храняться все дейс
         self.name = QFileDialog.getSaveFileName(self, 'Сохранить как', '', "*.png")[0]
         self.image.save(self.name) #сохранить под новым именем
         QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
-        
-
         
 #вызов окна 
 if __name__ == '__main__': 
