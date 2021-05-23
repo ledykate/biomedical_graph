@@ -377,6 +377,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
         #print(click_update)
         
     def plot_graph(self):
+        global click_update
         if click_update == 1:
             QMessageBox.information(self, 'Сообщение', "ОК")
             is_check_ind = []
@@ -395,6 +396,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                             use_unicode = True)
                 self.cursor = self.conn.cursor()
                 n_ind, vertices_label_ind, color_vs, edges_graph = my_graph(latin_name_ch,self.cursor)
+                #vertices_label_graph = 
                 # задание цвета для показателей
                 
                 for j in range(len(self.sys_check)):
@@ -406,13 +408,24 @@ class Main(QMainWindow): # класс, где храняться все дейс
                         row_ind_sys = self.cursor.fetchall()
                         if self.sys_check[j] == row_ind_sys[0][0]: # если показатель есть
                             color_vs[i] = self.color_orig[self.sys_check[j]-1] # задаём цвет
-                
+                vertices_label_graph = [0 for i in range(len(vertices_label_ind))]
+                vertices_label_graph[n_ind:] = vertices_label_ind[n_ind:]
+                if self.lang != "Латинские названия":
+                    if self.check == False:
+                        vertices_label_graph[:n_ind] = [self.new_vertices_label[i] for i in is_check_ind]
+                    else:
+                        vertices_label_graph[:n_ind] = [self.new_vertices_label_sh[i] for i in is_check_ind] 
+                else:
+                    if self.check == False:
+                        vertices_label_graph = vertices_label_ind.copy()
+                    else:
+                        vertices_label_graph[:n_ind] = [self.ver_short_latin[i] for i in is_check_ind]
                 
                 
                 
                 self.g = igraph.Graph(directed = True) # создание направленного графа
                 self.g.add_vertices(len(vertices_label_ind)) # количество вершин
-                self.output_vs = vertices_label_ind.copy() # для вывода имён на графе
+                self.output_vs = vertices_label_graph.copy() # для вывода имён на графе
                 # перенос имён по разделителю для удобного вывода
                 for i in range(len(self.output_vs)):
                     text_label = self.output_vs[i]
@@ -440,6 +453,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
                 self.photo = QPixmap(ImageQt.toqpixmap(self.image))
                 self.img.setPixmap(self.photo) #вывести изображение
             
+                #click_update = 0
                 #print(vertices_label_ind)
                 #print(edges_graph)
             #print(latin_name_ch)       
