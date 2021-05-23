@@ -480,7 +480,7 @@ class Main(QMainWindow): # класс, где храняться все дейс
     def saveas_file(self): #сохранить изображение как (смена имени или выбор другой папки)
         #выбор папки и имени для сохранения
         self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox))) #изображение pixmap
-        self.name = QFileDialog.getSaveFileName(self, 'Сохранить как', '', "*.png")[0]
+        self.name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
         self.image.save(self.name) #сохранить под новым именем
         QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
         
