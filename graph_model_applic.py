@@ -93,9 +93,9 @@ class Main(QMainWindow):  # класс, где храняться все дей�
             item.setFlags(QtCore.Qt.ItemIsEnabled)  # запрещаем редактировать
             self.table_systems.setCellWidget(i, 0, check_box)  # добавлем флажок в ячейку
             # задание цвета ячейке
-            self.table_systems.item(i, 0).setBackground(QColor(self.color_orig[i][0] * 255,
-                                                               self.color_orig[i][1] * 255,
-                                                               self.color_orig[i][2] * 255))
+            self.table_systems.item(i, 0).setBackground(QColor(round(self.color_orig[i][0] * 255),
+                                                               round(self.color_orig[i][1] * 255),
+                                                               round(self.color_orig[i][2] * 255)))
         self.table_systems.horizontalHeader().setStretchLastSection(True)  # растянуть последний столбец
 
     # ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
@@ -273,9 +273,9 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                                                         % name1)
                     row_color_ind = self.cursor.fetchall()
                     color_ind = row_color_ind[0][0]
-                    self.table_ind.item(i, 1).setBackground(QColor(self.color_orig[color_ind - 1][0] * 255,
-                                                                   self.color_orig[color_ind - 1][1] * 255,
-                                                                   self.color_orig[color_ind - 1][2] * 255))
+                    self.table_ind.item(i, 1).setBackground(QColor(round(self.color_orig[color_ind - 1][0] * 255),
+                                                                   round(self.color_orig[color_ind - 1][1] * 255),
+                                                                   round(self.color_orig[color_ind - 1][2] * 255)))
 
                     if self.m >= 2:  # для вывод доп.имён
                         if self.lang == "Латинские названия":  # если базовые имена
@@ -404,18 +404,20 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
                 # размер изображения
                 b = int(self.spinBox_bbox_graph.value())
-                bbox = (b, b)
+                self.bbox = (b, b)
                 # стиль отображения графа
                 self.layout = self.g.layout_fruchterman_reingold()
 
                 # построение графа
                 igraph.plot(self.g, "test_indic.png", layout=self.layout,
-                            bbox=bbox, margin=(50, 100, 50, 100))
+                            bbox=self.bbox, margin=(50, 100, 50, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
-                self.image = Image.open(self.filename)  # открыть как изображение
-                self.photo = QPixmap(ImageQt.toqpixmap(self.image))
-                self.img.setPixmap(self.photo)  # вывести изображение
+                #self.image = Image.open(self.filename)  # открыть как изображение
+                self.pixmap = QPixmap(self.filename)
+                self.img.setPixmap(self.pixmap)
+                #self.photo = QPixmap(ImageQt.toqpixmap(self.image))
+                #self.img.setPixmap(self.image)  # вывести изображение
         else:
             QMessageBox.information(self, 'Сообщение', "Вы не обновили данные")
 
@@ -464,9 +466,9 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                                                            % name_eq_1)
                     row_color_ind_eq = self.cursor.fetchall()
                     color_ind = row_color_ind_eq[0][0]
-                    self.table_equip_ind.item(i, 0).setBackground(QColor(self.color_orig[color_ind - 1][0] * 255,
-                                                                         self.color_orig[color_ind - 1][1] * 255,
-                                                                         self.color_orig[color_ind - 1][2] * 255))
+                    self.table_equip_ind.item(i, 0).setBackground(QColor(round(self.color_orig[color_ind - 1][0] * 255),
+                                                                         round(self.color_orig[color_ind - 1][1] * 255),
+                                                                         round(self.color_orig[color_ind - 1][2] * 255)))
 
                     if (self.m >= 2) and self.lang != "Латинские названия":  # для нелатинских названий
                         # полное доп.название
@@ -486,9 +488,19 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
     def saveas_file(self):  # сохранить изображение как (смена имени или выбор другой папки)
         # выбор папки и имени для сохранения
-        self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox)))  # изображение pixmap
-        self.name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
-        self.image.save(self.name)  # сохранить под новым именем
+
+        #self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox)))  # изображение pixmap
+        
+        name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
+        #print(self.name)
+        self.img.pixmap().save(name)  # сохранить под новым именем
+        #current_dir = os.getcwd()
+        #file_name = self.img.text()
+        
+        #if file_name:
+            #name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
+            #path = os.path.join(current_dir, name + '.png')
+            #self.img.pixmap().save(path)
         QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
 
 

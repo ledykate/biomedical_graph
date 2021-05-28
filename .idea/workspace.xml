@@ -19,7 +19,13 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e56c89f4-247c-43b3-9c82-78e720766c03" name="Default Changelist" comment="" />
+    <list default="true" id="e56c89f4-247c-43b3-9c82-78e720766c03" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/biomedical_graph.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/biomedical_graph.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_model_applic.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_model_applic.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_indic.png" beforeDir="false" afterPath="$PROJECT_DIR$/test_indic.png" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -35,8 +41,17 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../../gg" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings module-name="biomedical_graph" is-module-sdk="true">
+        <option name="myUseModuleSdk" value="true" />
+        <option name="myModuleName" value="biomedical_graph" />
+      </console-settings>
+    </option>
   </component>
   <component name="RunManager">
     <configuration name="graph_model_applic" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
@@ -92,55 +107,5 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Последння версия с цветом" />
     <option name="LAST_COMMIT_MESSAGE" value="Последння версия с цветом" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1621856834632">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="223" y="67" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1621856834632" />
-    <state x="549" y="167" key="FileChooserDialogImpl" timestamp="1622206729736">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="549" y="167" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1622206729736" />
-    <state width="757" height="183" key="GridCell.Tab.0.bottom" timestamp="1622210791547">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="757" height="183" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622210791547" />
-    <state width="757" height="183" key="GridCell.Tab.0.center" timestamp="1622210791547">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="757" height="183" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1622210791547" />
-    <state width="757" height="183" key="GridCell.Tab.0.left" timestamp="1622210791547">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="757" height="183" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1622210791547" />
-    <state width="757" height="183" key="GridCell.Tab.0.right" timestamp="1622210791547">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="757" height="183" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1622210791547" />
-    <state width="1515" height="261" key="GridCell.Tab.1.bottom" timestamp="1622064196437">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1622064196437" />
-    <state width="1515" height="261" key="GridCell.Tab.1.center" timestamp="1622064196436">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1622064196436" />
-    <state width="1515" height="261" key="GridCell.Tab.1.left" timestamp="1622064196436">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1622064196436" />
-    <state width="1515" height="261" key="GridCell.Tab.1.right" timestamp="1622064196437">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1515" height="261" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1622064196437" />
-    <state x="506" y="70" width="981" height="707" key="SettingsEditor" timestamp="1622195992881">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="506" y="70" width="981" height="707" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1622195992881" />
-    <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1622037654345">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="586" y="326" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1622037654345" />
   </component>
 </project>
