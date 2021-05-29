@@ -22,7 +22,7 @@
     <list default="true" id="e56c89f4-247c-43b3-9c82-78e720766c03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graph_model_applic.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_model_applic.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_graph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_indic.png" beforeDir="false" afterPath="$PROJECT_DIR$/test_indic.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,6 +88,14 @@
       <option name="presentableId" value="Default" />
       <updated>1621800244058</updated>
     </task>
+    <task id="LOCAL-00001" summary="Удалила методики и оборудование на графе">
+      <created>1622282093374</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1622282093374</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -104,6 +112,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Последння версия с цветом" />
-    <option name="LAST_COMMIT_MESSAGE" value="Последння версия с цветом" />
+    <MESSAGE value="Удалила методики и оборудование на графе" />
+    <option name="LAST_COMMIT_MESSAGE" value="Удалила методики и оборудование на графе" />
   </component>
 </project>

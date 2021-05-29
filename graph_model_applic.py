@@ -1,5 +1,4 @@
 # ДОБАВИТЬ ROUND к цвету по системам
-# Убрать методики и оборудование из графа
 import sys  # запуск окна
 import os  # поиск файла
 import MySQLdb  # библиотека для работы с MySQL
@@ -40,7 +39,7 @@ class Main(QMainWindow):  # класс, где храняться все дей�
         # переменные для работы с изображением графа
         self.image = None  # изображение (pillow)
         self.photo = None  # изображение в виджите (pixmap)
-
+        self.filename = ''
         global click_update  # глобальная переменная
         click_update = 0  # переменная отвечающая за корректное нажатие кнопки и данных
 
@@ -78,9 +77,14 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
         # задание цветов по системе
         self.color_orig = []
-        for j in range(len(self.row_sys)):
-            col = np.random.sample(3)  # рандомное значение от 0 до 1 (палитра RGB)
-            self.color_orig.append(col.tolist())  # преобразование в список
+        self.color_orig.append([1, 0.4039, 0.5059])  # розовый
+        self.color_orig.append([1, 1, 0])  # жёлтый
+        self.color_orig.append([0, 1, 0])  # зелёный
+        self.color_orig.append([0, 0.8392, 1])  # голубой
+        self.color_orig.append([0.6941, 0.0471, 0.9529])  # фиолетовый
+        # for j in range(len(self.row_sys)):
+        #   col = np.random.sample(3)  # рандомное значение от 0 до 1 (палитра RGB)
+        #   self.color_orig.append(col.tolist())  # преобразование в список
 
         # создание флажков в таблице с системами
         self.table_systems.setRowCount(len(self.sys_ind))  # изменяем количество строк
@@ -97,25 +101,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                                                                round(self.color_orig[i][1] * 255),
                                                                round(self.color_orig[i][2] * 255)))
         self.table_systems.horizontalHeader().setStretchLastSection(True)  # растянуть последний столбец
-
-    # ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
-    def big(self):  # увеличение изображения
-        w = self.image.size[0]  # ширина изображения
-        h = self.image.size[1]  # высота изображения
-        val = self.ScrollBar_big.value()  # значение процента для увеличения (от 100 до 500)
-        x = round((val / 100) * w)  # новое значение ширины
-        y = round((val / 100) * h)  # новое значение высоты
-        self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize((x, y))))  # изображение pixmap
-        self.img.setPixmap(self.photo)  # добавляем на виджет
-
-    def small(self):  # уменьшение изображения
-        w = self.image.size[0]  # ширина изображения
-        h = self.image.size[1]  # высота изображения
-        val = self.ScrollBar_small.value()  # значение процента для уменьшения (от 100 до 500)
-        x = round(w / (val / 100))  # новое значение ширина
-        y = round(h / (val / 100))  # новое значение высоты
-        self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize((x, y))))  # изображение pixmap
-        self.img.setPixmap(self.photo)  # добавляем на виджет
 
     # КНОПКА ОБНОВЛЕНИЯ
     def update_ind(self):
@@ -404,22 +389,37 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
                 # размер изображения
                 b = int(self.spinBox_bbox_graph.value())
-                self.bbox = (b, b)
                 # стиль отображения графа
                 self.layout = self.g.layout_fruchterman_reingold()
 
                 # построение графа
                 igraph.plot(self.g, "test_indic.png", layout=self.layout,
-                            bbox=self.bbox, margin=(50, 100, 50, 100))
+                            bbox=(b, b), margin=(50, 100, 50, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
-                # self.image = Image.open(self.filename)  # открыть как изображение
                 self.pixmap = QPixmap(self.filename)
                 self.img.setPixmap(self.pixmap)
-                # self.photo = QPixmap(ImageQt.toqpixmap(self.image))
-                # self.img.setPixmap(self.image)  # вывести изображение
         else:
             QMessageBox.information(self, 'Сообщение', "Вы не обновили данные")
+
+    # ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
+    def big(self):  # увеличение изображения
+        if self.filename != '':
+            w = self.pixmap.width()
+            h = self.pixmap.height()
+            val = self.ScrollBar_big.value()  # значение процента для увеличения (от 100 до 500)
+            x = round((val / 100) * w)  # новое значение ширины
+            y = round((val / 100) * h)  # новое значение высоты
+            self.img.setPixmap(self.pixmap.scaled(x, y, Qt.KeepAspectRatio, Qt.FastTransformation))
+
+    def small(self):  # уменьшение изображения
+        if self.filename != '':
+            w = self.pixmap.width()
+            h = self.pixmap.height()
+            val = self.ScrollBar_small.value()  # значение процента для уменьшения (от 100 до 500)
+            x = round(w / (val / 100))  # новое значение ширина
+            y = round(h / (val / 100))  # новое значение высоты
+            self.img.setPixmap(self.pixmap.scaled(x, y, Qt.KeepAspectRatio, Qt.FastTransformation))
 
     # выбор всех показателей
     def change_all(self, state):
@@ -489,21 +489,9 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
     def saveas_file(self):  # сохранить изображение как (смена имени или выбор другой папки)
         # выбор папки и имени для сохранения
-
-        # self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox)))  # изображение pixmap
-
         name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
-        # print(self.name)
-        self.img.pixmap().save(name)  # сохранить под новым именем
-        # current_dir = os.getcwd()
-        # file_name = self.img.text()
-
-        # if file_name:
-        # name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
-        # path = os.path.join(current_dir, name + '.png')
-        # self.img.pixmap().save(path)
+        self.pixmap.save(name)
         QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
-
 
 # вызов окна
 if __name__ == '__main__':
