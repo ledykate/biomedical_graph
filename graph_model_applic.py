@@ -1,5 +1,5 @@
-#ДОБАВИТЬ ROUND к цвету по системам
-#Убрать методики и оборудование из графа
+# ДОБАВИТЬ ROUND к цвету по системам
+# Убрать методики и оборудование из графа
 import sys  # запуск окна
 import os  # поиск файла
 import MySQLdb  # библиотека для работы с MySQL
@@ -413,11 +413,11 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                             bbox=self.bbox, margin=(50, 100, 50, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
-                #self.image = Image.open(self.filename)  # открыть как изображение
+                # self.image = Image.open(self.filename)  # открыть как изображение
                 self.pixmap = QPixmap(self.filename)
                 self.img.setPixmap(self.pixmap)
-                #self.photo = QPixmap(ImageQt.toqpixmap(self.image))
-                #self.img.setPixmap(self.image)  # вывести изображение
+                # self.photo = QPixmap(ImageQt.toqpixmap(self.image))
+                # self.img.setPixmap(self.image)  # вывести изображение
         else:
             QMessageBox.information(self, 'Сообщение', "Вы не обновили данные")
 
@@ -468,7 +468,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                     color_ind = row_color_ind_eq[0][0]
                     self.table_equip_ind.item(i, 0).setBackground(QColor(round(self.color_orig[color_ind - 1][0] * 255),
                                                                          round(self.color_orig[color_ind - 1][1] * 255),
-                                                                         round(self.color_orig[color_ind - 1][2] * 255)))
+                                                                         round(
+                                                                             self.color_orig[color_ind - 1][2] * 255)))
 
                     if (self.m >= 2) and self.lang != "Латинские названия":  # для нелатинских названий
                         # полное доп.название
@@ -489,18 +490,18 @@ class Main(QMainWindow):  # класс, где храняться все дей�
     def saveas_file(self):  # сохранить изображение как (смена имени или выбор другой папки)
         # выбор папки и имени для сохранения
 
-        #self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox)))  # изображение pixmap
-        
+        # self.photo = QPixmap(ImageQt.toqpixmap(self.image.resize(self.bbox)))  # изображение pixmap
+
         name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
-        #print(self.name)
+        # print(self.name)
         self.img.pixmap().save(name)  # сохранить под новым именем
-        #current_dir = os.getcwd()
-        #file_name = self.img.text()
-        
-        #if file_name:
-            #name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
-            #path = os.path.join(current_dir, name + '.png')
-            #self.img.pixmap().save(path)
+        # current_dir = os.getcwd()
+        # file_name = self.img.text()
+
+        # if file_name:
+        # name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
+        # path = os.path.join(current_dir, name + '.png')
+        # self.img.pixmap().save(path)
         QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
 
 
