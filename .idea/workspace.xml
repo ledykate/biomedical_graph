@@ -95,7 +95,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622282093374</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Работает изменение масштаба">
+      <created>1622288262676</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1622288262676</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -113,6 +120,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Последння версия с цветом" />
     <MESSAGE value="Удалила методики и оборудование на графе" />
-    <option name="LAST_COMMIT_MESSAGE" value="Удалила методики и оборудование на графе" />
+    <MESSAGE value="Работает изменение масштаба" />
+    <option name="LAST_COMMIT_MESSAGE" value="Работает изменение масштаба" />
   </component>
 </project>

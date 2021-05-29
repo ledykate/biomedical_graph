@@ -3,7 +3,7 @@ import sys  # запуск окна
 import os  # поиск файла
 import MySQLdb  # библиотека для работы с MySQL
 import igraph  # библиотека для работы с графами
-import numpy as np  # формирование случайно последовательности
+# import numpy as np  # формирование случайной последовательности (если много систем и нужно каждой задать цвет)
 from my_graph import my_indicator, my_graph, syst_ind  # функция для построения графа
 
 from PIL import Image, ImageQt  # библиотека по работе с изображениями PIL (pillow)
@@ -37,8 +37,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
         self.img.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
         # переменные для работы с изображением графа
-        self.image = None  # изображение (pillow)
-        self.photo = None  # изображение в виджите (pixmap)
+        #self.image = None  # изображение (pillow)
+        self.pixmap = None  # изображение в виджите (pixmap)
         self.filename = ''
         global click_update  # глобальная переменная
         click_update = 0  # переменная отвечающая за корректное нажатие кнопки и данных
@@ -82,6 +82,7 @@ class Main(QMainWindow):  # класс, где храняться все дей�
         self.color_orig.append([0, 1, 0])  # зелёный
         self.color_orig.append([0, 0.8392, 1])  # голубой
         self.color_orig.append([0.6941, 0.0471, 0.9529])  # фиолетовый
+        # если очень много систем, то их цвета могут задваться рандомно, как в цикле ниже
         # for j in range(len(self.row_sys)):
         #   col = np.random.sample(3)  # рандомное значение от 0 до 1 (палитра RGB)
         #   self.color_orig.append(col.tolist())  # преобразование в список
@@ -313,8 +314,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
             self.table_equip_ind.setRowCount(0)
             self.table_equip_ind.setColumnCount(0)
             self.filename = ''
-            self.photo = QPixmap()  # очистка изображение pixmap
-            self.img.setPixmap(self.photo)
+            self.pixmap = QPixmap()  # очистка изображение pixmap
+            self.img.setPixmap(self.pixmap)
             self.equipment_ind.clear()
         # print(click_update)
 
@@ -368,6 +369,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                 ### ПОСТРОЕНИЕ графа
                 self.g = igraph.Graph(directed=True)  # создание направленного графа
                 self.g.add_vertices(len(vertices_label_ind))  # количество вершин
+                self.g.add_edges(edges_graph)  # добавление рёбер
+
                 output_vs = vertices_label_graph.copy()  # для вывода имён на графе
                 # перенос имён по разделителю для удобного вывода
                 for i in range(len(output_vs)):
@@ -379,9 +382,16 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
                 self.g.vs["label"] = output_vs  # подписи вершин
                 self.g.vs["color"] = color_vs  # цвета вершин
-                self.g.vs["size"] = 70  # размер вершин
-                self.g.vs["label_size"] = 12  # размер подписи
-                self.g.add_edges(edges_graph)  # добавление рёбер
+                # задание размеров в зависимости от выбрана ли аббревиатура
+                if self.check == False:  # аббревиатура выбрана
+                    l_s = 12  # размер текста в вершине
+                    s_z = 70  # размер вершины
+                else:  # аббревиатура не выбрана
+                    l_s = 14  # размер текста в вершине
+                    s_z = 55  # размер вершины
+                self.g.vs["size"] = s_z  # размер вершин
+                self.g.vs["label_size"] = l_s  # размер подписи
+
                 self.g.es["width"] = 1.2  # ширина ребра
                 # нумерация рёбер
                 self.g.es["weight"] = [i + 1 for i in range(len(edges_graph))]
@@ -390,11 +400,11 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                 # размер изображения
                 b = int(self.spinBox_bbox_graph.value())
                 # стиль отображения графа
-                self.layout = self.g.layout_fruchterman_reingold()
+                # self.layout = self.g.layout_fruchterman_reingold()
 
                 # построение графа
-                igraph.plot(self.g, "test_indic.png", layout=self.layout,
-                            bbox=(b, b), margin=(50, 100, 50, 100))
+                igraph.plot(self.g, "test_indic.png",  # layout=self.layout,
+                            bbox=(b, b), margin=(55, 100, 55, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
                 self.pixmap = QPixmap(self.filename)
@@ -404,18 +414,18 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
     # ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
     def big(self):  # увеличение изображения
-        if self.filename != '':
-            w = self.pixmap.width()
-            h = self.pixmap.height()
+        if self.filename != '':  # если изображение выведено
+            w = self.pixmap.width()  # считываем исходную ширину
+            h = self.pixmap.height()  # считываем исходную высоту
             val = self.ScrollBar_big.value()  # значение процента для увеличения (от 100 до 500)
             x = round((val / 100) * w)  # новое значение ширины
             y = round((val / 100) * h)  # новое значение высоты
             self.img.setPixmap(self.pixmap.scaled(x, y, Qt.KeepAspectRatio, Qt.FastTransformation))
 
     def small(self):  # уменьшение изображения
-        if self.filename != '':
-            w = self.pixmap.width()
-            h = self.pixmap.height()
+        if self.filename != '':  # если изображение выведено
+            w = self.pixmap.width()  # считываем исходную ширину
+            h = self.pixmap.height()  # считываем исходную высоту
             val = self.ScrollBar_small.value()  # значение процента для уменьшения (от 100 до 500)
             x = round(w / (val / 100))  # новое значение ширина
             y = round(h / (val / 100))  # новое значение высоты
@@ -489,9 +499,13 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
     def saveas_file(self):  # сохранить изображение как (смена имени или выбор другой папки)
         # выбор папки и имени для сохранения
-        name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
-        self.pixmap.save(name)
-        QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
+        if self.filename != '':
+            name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
+            self.pixmap.save(name)
+            QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
+        else:
+            QMessageBox.information(self, 'Сообщение', "Изображения ещё нет")
+
 
 # вызов окна
 if __name__ == '__main__':
