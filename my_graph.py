@@ -10,7 +10,6 @@ def syst_ind(systems_ind):
         systems_ind = str(systems_ind)  # преобразуем в строку
     return systems_ind
 
-
 def my_indicator(systems_ind, cursor):
     # все латинские имена
     row_all_lat = cursor.execute("SELECT Latin_name \
@@ -86,14 +85,18 @@ def my_graph(all_latin_name, cursor):
 
 ##### ПРОВЕРКА РАБОТЫ ФУНКЦИИ
 '''
+# ковертация листа в строку кортежа
 systems_ind = [1,2]
+s = syst_ind(systems_ind)
+
 conn = MySQLdb.connect('localhost', 'root', 'root','biomedical_indicators',charset='utf8', 
                        use_unicode = True)
 cursor = conn.cursor()
-n, vertices_label, color_vs, edges_graph = my_graph(systems_ind,cursor)
 
-print("Список вершин")
-print(vertices_label)
-print("Список рёбер")
-print(edges_graph)
+# список вершин заданных систем
+n, vertices_label = my_indicator(systems_ind,cursor)
+
+# рёбра и вершины
+n, vertices_label, color_vs, edges_graph = my_graph(all_latin_name, cursor)
+
 '''

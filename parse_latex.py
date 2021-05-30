@@ -25,10 +25,8 @@ def parse_latex(string_latex):
     result = list(set(result)) 
     return(result) # результат
 
+'''
 #### ПРОВЕРКА РАБОТЫ ФУНКЦИИ
-
 str_lat = r'$ИМТ=\frac{МТ}{{{ДТ}^{2}}}$'
 res = parse_latex(str_lat)
-
-
-        
+'''
