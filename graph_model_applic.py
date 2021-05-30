@@ -1,4 +1,3 @@
-# ДОБАВИТЬ ROUND к цвету по системам
 import sys  # запуск окна
 import os  # поиск файла
 import MySQLdb  # библиотека для работы с MySQL
@@ -6,7 +5,6 @@ import igraph  # библиотека для работы с графами
 # import numpy as np  # формирование случайной последовательности (если много систем и нужно каждой задать цвет)
 from my_graph import my_indicator, my_graph, syst_ind  # функция для построения графа
 
-from PIL import Image, ImageQt  # библиотека по работе с изображениями PIL (pillow)
 # Работа с библиотекой PyQt5 для работы интерфейса
 from PyQt5.QtWidgets import QMainWindow, QFileDialog, QApplication, QMessageBox, QVBoxLayout
 from PyQt5.uic import loadUi

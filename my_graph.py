@@ -1,7 +1,6 @@
 # import MySQLdb
 from parse_latex import parse_latex
 
-
 def syst_ind(systems_ind):
     systems_ind = tuple(systems_ind)  # преобразуем список систем в кортеж
     if len(systems_ind) == 1:  # если всего одна система
@@ -31,7 +30,7 @@ def my_graph(all_latin_name, cursor):
     vertices_label = []  # названия вершин
     color_vs = []  # цвета вершин
     for i in range(len(all_latin_name)):
-        color_vs.append([0, 0.749, 1])  # цвет у вершин голубой
+        color_vs.append([1, 0, 0])  # цвет у вершин красный
     n = len(all_latin_name)  # количество всех показателей
     rows = cursor.execute("SELECT Latin_name, Calculation_form \
                                 FROM (basic_name_indicator \
@@ -81,54 +80,7 @@ def my_graph(all_latin_name, cursor):
                             edges_graph.append((i, m))  # добавляем ребро
 
     vertices_label += all_latin_name  # добавляем в подписи к вершинам
-    '''
-    ##### ПОКАЗАТЕЛИ, ФОРМИРУЕМЫЕ ПО МЕТОДИКЕ--------------------------------------
-    # запрос, которые выводит всю таблицу formed_idicator_method, но
-    # вместо id показатели и методики выводит латинское название показателя
-    # и название методики на русском языке
-    for i in range(len(vertices_label)):
-        # запрос по нахождению методики по названию
-        row_meth_ind = cursor.execute("SELECT Name_method_Russian \
-                                  FROM (formed_idicator_method \
-                                  INNER JOIN basic_name_indicator \
-                                  ON formed_idicator_method.idBasicName = \
-                                  basic_name_indicator.idBasicName) \
-                                  INNER JOIN method \
-                                  ON formed_idicator_method.idMethod = \
-                                  method.idMethod \
-                                  WHERE Latin_name = '%s'" % vertices_label[i])
-        row_meth_ind = cursor.fetchall()
-        if row_meth_ind != ():
-            for j in range(len(row_meth_ind)):
-                if row_meth_ind[j][0] not in vertices_label: # если нет в списке
-                    vertices_label.append(row_meth_ind[j][0]) # добавляем вершину
-                    color_vs.append([0,1,0]) # цвет методик зелёный
-                edges_graph.append((i,vertices_label.index(row_meth_ind[j][0]))) # добавляем ребро
-    m = len(vertices_label)
     
-    #### МЕТОДИКИ И ОБОРУДОВАНИЕ, НА КОТОРОМ ОНИ ИЗМЕРЯЮТСЯ------------------------  
-    # запрос таблицы unit_method_equip, но выводятся название оборудования
-    for i in range(n,m): # для каждой методики
-        # находим оборудование, на котором измеряется
-        rows_met_eq = cursor.execute("SELECT Name_equipment \
-                                     FROM (unit_method_equip \
-                                           INNER JOIN method \
-                                           ON unit_method_equip.idMethod = \
-                                           method.idMethod) \
-                                     INNER JOIN equipment \
-                                     ON unit_method_equip.idEquipment = \
-                                     equipment.idEquipment \
-                                     WHERE method.Name_method_Russian = '%s'" \
-                                     % vertices_label[i])
-        rows_met_eq = cursor.fetchall()
-        if rows_met_eq != (): # елси запрос не пустой
-            for j in range(len(rows_met_eq)):
-                if rows_met_eq[j][0] not in vertices_label: # в списке вершин
-                    vertices_label.append(rows_met_eq[j][0]) # добавляем вершину
-                    color_vs.append([1,1,0]) # цвет вершины оборудования - жёлтый
-                edges_graph.append((i,vertices_label.index(rows_met_eq[j][0]))) # добавляем ребро
-                    
-    '''
     return n, vertices_label, color_vs, edges_graph
 
 
