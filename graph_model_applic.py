@@ -469,8 +469,7 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                     color_ind = row_color_ind_eq[0][0]
                     self.table_equip_ind.item(i, 0).setBackground(QColor(round(self.color_orig[color_ind - 1][0] * 255),
                                                                          round(self.color_orig[color_ind - 1][1] * 255),
-                                                                         round(
-                                                                             self.color_orig[color_ind - 1][2] * 255)))
+                                                                         round(self.color_orig[color_ind - 1][2] * 255)))
 
                     if (self.m >= 2) and self.lang != "Латинские названия":  # для нелатинских названий
                         # полное доп.название
