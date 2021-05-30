@@ -13,7 +13,6 @@ from PyQt5.QtCore import Qt
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.Qt import QHeaderView
 
-
 class Main(QMainWindow):  # класс, где храняться все действия
     def __init__(self):  # служебная функция инициализации,загрузка окна
         QMainWindow.__init__(self)
@@ -35,7 +34,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
         self.img.setAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
 
         # переменные для работы с изображением графа
-        #self.image = None  # изображение (pillow)
         self.pixmap = None  # изображение в виджите (pixmap)
         self.filename = ''
         global click_update  # глобальная переменная
@@ -145,7 +143,7 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                                     ON additional_name.idLanguage = language_add_indicator.idLanguage \
                                     WHERE (Name_language = '%s') AND (Latin_name = '%s')\
                                     ORDER BY idAddName limit 1;" \
-                                                   % (self.lang, self.new_vertices_label[i]))  # язык, баз.показателья
+                                    % (self.lang, self.new_vertices_label[i]))  # язык, баз.показателья
                     row_lang = self.cursor.fetchall()  # получаем данные
                     if row_lang == ():  # если запрос пустой
                         err += 1  # ошибка
@@ -253,8 +251,7 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
                     row_color_ind = self.cursor.execute("SELECT idSystem \
                                          FROM basic_name_indicator \
-                                         WHERE Latin_name = '%s'" \
-                                                        % name1)
+                                         WHERE Latin_name = '%s'" % name1)
                     row_color_ind = self.cursor.fetchall()
                     color_ind = row_color_ind[0][0]
                     self.table_ind.item(i, 1).setBackground(QColor(round(self.color_orig[color_ind - 1][0] * 255),
@@ -283,8 +280,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                             new_item_3.setFlags(QtCore.Qt.ItemIsEnabled)  # запрещаем редактировать
                             # добавлем в 3 столбцец
                             self.table_ind.setItem(i, 3, new_item_3)
-                # растягивание последнего столбца  
-                # self.table_ind.horizontalHeader().setStretchLastSection(True)
                 # автоматические подбор ширины столбца
                 self.table_ind.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
                 self.table_ind.horizontalHeader().setMinimumSectionSize(0)
@@ -297,7 +292,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                     self.table_ind.setHorizontalHeaderLabels(text[:])
             else:  # если количество столбцов равно m = 0
                 self.table_ind.setRowCount(0)
-            # click_update = 0
         else:  # не выбран ни одни флажок
             click_update = 0
             # сообщение
@@ -305,17 +299,18 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                                     "Вы не выбрали системы организма!")
             # self.language_indicator.setCurrentIndex(0) # язык латинский
             self.checkBox_abbrev.setChecked(False)  # флажок не влючён
-            self.ScrollBar_small.setValue(100)
-            self.ScrollBar_big.setValue(100)
-            self.table_ind.setRowCount(0)
+            self.ScrollBar_small.setValue(100) # исходна позиция ползунка
+            self.ScrollBar_big.setValue(100) # исходна позиция ползунка
+            # обнуление таблицы с показателями
+            self.table_ind.setRowCount(0) 
             self.table_ind.setColumnCount(0)
+            # обнуление таблицы с оборудованием и показателями
             self.table_equip_ind.setRowCount(0)
             self.table_equip_ind.setColumnCount(0)
-            self.filename = ''
+            self.filename = '' # пустой пусть к файлу
             self.pixmap = QPixmap()  # очистка изображение pixmap
             self.img.setPixmap(self.pixmap)
-            self.equipment_ind.clear()
-        # print(click_update)
+            self.equipment_ind.clear() # очистить выпадающий список оборудования
 
     # ПОСТРОЕНИЕ ГРАФА    
     def plot_graph(self):
@@ -397,12 +392,10 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
                 # размер изображения
                 b = int(self.spinBox_bbox_graph.value())
-                # стиль отображения графа
-                # self.layout = self.g.layout_fruchterman_reingold()
 
                 # построение графа
-                igraph.plot(self.g, "test_indic.png",  # layout=self.layout,
-                            bbox=(b, b), margin=(55, 100, 55, 100))
+                igraph.plot(self.g, "test_indic.png", bbox=(b, b), 
+                            margin=(55, 100, 55, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
                 self.pixmap = QPixmap(self.filename)
@@ -485,7 +478,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                         new_eq_item_2 = QtWidgets.QTableWidgetItem(name_eq_2)  # ячейка
                         new_eq_item_2.setFlags(QtCore.Qt.ItemIsEnabled)  # запрещаем редактировать
                         self.table_equip_ind.setItem(i, 1, new_eq_item_2)  # добавляем во 2 столбце
-                # self.table_equip_ind.horizontalHeader().setStretchLastSection(True)
                 # автоматические подбор ширины столбца
                 self.table_equip_ind.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeToContents)
                 self.table_equip_ind.horizontalHeader().setMinimumSectionSize(0)
@@ -503,7 +495,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
             QMessageBox.information(self, 'Сообщение', "Ваше изображение сохранено")
         else:
             QMessageBox.information(self, 'Сообщение', "Изображения ещё нет")
-
 
 # вызов окна
 if __name__ == '__main__':

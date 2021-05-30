@@ -1,5 +1,5 @@
 # import MySQLdb
-from parse_latex import parse_latex
+
 
 def syst_ind(systems_ind):
     systems_ind = tuple(systems_ind)  # преобразуем список систем в кортеж
@@ -24,7 +24,7 @@ def my_indicator(systems_ind, cursor):
     n = len(all_latin_name)  # количество всех показателей
     return n, all_latin_name
 
-
+from parse_latex import parse_latex
 def my_graph(all_latin_name, cursor):
     vertices_label = []  # названия вершин
     color_vs = []  # цвета вершин
