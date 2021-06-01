@@ -1,4 +1,4 @@
-# import MySQLdb
+import MySQLdb
 
 
 def syst_ind(systems_ind):
@@ -76,15 +76,37 @@ def my_graph(all_latin_name, cursor):
                         # находим индекс показателя
                         if formula_latex[j][h] in all_latin_name:
                             m = all_latin_name.index(formula_latex[j][h])
-                            edges_graph.append((i, m))  # добавляем ребро
+                            edges_graph.append((m, i))  # добавляем ребро
 
     vertices_label += all_latin_name  # добавляем в подписи к вершинам
+    '''
+    new_eg = []
+    h = []
+    k = []
+    for i in range(len(edges_graph)):
+        h.append(edges_graph[i][0])
+        k.append(i)
+        new_eg.append((edges_graph[i][0],i))
+    for eg in sorted(new_eg):
+        #print(eg[1])
+        continue
+    new_eg = sorted(new_eg)
+    new_eges_graph = []
+    for i in range(len(edges_graph)):
+        new_eges_graph.append((new_eg[i][0],edges_graph[new_eg[i][1]][1]))
+       
+    #h.sort()
     
+    #print(h)
+    #print(k)
+    #print(sorted(new_eg))
+    #print(new_eges_graph)
+    '''
     return n, vertices_label, color_vs, edges_graph
 
-
-##### ПРОВЕРКА РАБОТЫ ФУНКЦИИ
 '''
+##### ПРОВЕРКА РАБОТЫ ФУНКЦИИ
+
 # ковертация листа в строку кортежа
 systems_ind = [1,2]
 s = syst_ind(systems_ind)
@@ -97,6 +119,6 @@ cursor = conn.cursor()
 n, vertices_label = my_indicator(systems_ind,cursor)
 
 # рёбра и вершины
-n, vertices_label, color_vs, edges_graph = my_graph(all_latin_name, cursor)
-
+n, vertices_label, color_vs, edges_graph = my_graph(vertices_label, cursor)
 '''
+

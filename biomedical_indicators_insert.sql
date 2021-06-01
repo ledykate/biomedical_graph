@@ -62,7 +62,7 @@ INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indic
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Amplitudine musculus motus in fine operis', 'AMMinFO', 4, 1);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Kwaasa Index', 'KI', 2, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Myznikov Index', 'MI', 2, 2);
-INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Signum efficientiam operationem respiratorii', 'SEOR', NULL, NULL, 3, 2);
+INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Signum efficientiam operationem respiratorii', 'SEOR', 3, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Accentus campester', 'AC', 1, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Gradu corporis', 'GC', 1, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Corpus Massa Index', 'CMI', 1, 2);
@@ -73,22 +73,24 @@ INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indic
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Taxationem status autonomic nervosi', 'TSAN', 5, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Vane Index', 'VI', 5, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Systoles sanguinem volume', 'SSV', 1, 2);
+INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Speciei periphericis resistentia','SPR', 2, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Index periphericis vascularium resistentia', 'IPVR', 2, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Periphericis vascularium resistentia', 'PVR', 2, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Ictum volumine sanguinem', 'IVS', 2, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Summa periphericis resistentia', 'SPR', 2, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Vitalis capacitatem pulmo', 'VCP', 3, 2);
 INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Pulsus sanguinem pressura', 'PSP', 2, 2);
+INSERT INTO basic_name_indicator (Latin_name, Short_name, idSystem, idType_indicator) VALUES('Dicit bibendum sanguinem pressura','DBSP', 2, 2);
 
 # Данные  таблицы formed_idicator_method
 UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 1;
 UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 2;
 UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 3;
 UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 4;
-UPDATE formed_idicator_method SET idMethod = 1 WHERE idBasicName = 6;
+UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 6;
 UPDATE formed_idicator_method SET idMethod = 1 WHERE idBasicName = 7;
 UPDATE formed_idicator_method SET idMethod = 1 WHERE idBasicName = 8;
-UPDATE formed_idicator_method SET idMethod = 1 WHERE idBasicName = 10;
+UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 10;
 UPDATE formed_idicator_method SET idMethod = NULL WHERE idBasicName = 12;
 UPDATE formed_idicator_method SET idMethod = 2 WHERE idBasicName = 13;
 UPDATE formed_idicator_method SET idMethod = 3 WHERE idBasicName = 14;
@@ -112,24 +114,25 @@ INSERT INTO formula (Calculation_form) VALUES('$КВ=\\frac{ЧСС\\times 10}{П
 INSERT INTO formula (Calculation_form) VALUES('$IM=\\frac{ЧСС\\times САД}{ДАД}$');
 INSERT INTO formula (Calculation_form) VALUES('$ЭФдс=200-(121,36\\times ДО +3,546\\times ЧД)$');
 INSERT INTO formula (Calculation_form) VALUES('$УрС={{МТ}^{0,4036}}\\times ЧСС \\times ПАД \\times 0,000126$');
-INSERT INTO formula (Calculation_form) VALUES('$УФС=\\frac{700-3\\cdot ЧСС-2,5\\cdot СДД-2,7\\cdot В+0,28\\cdot МГ}{350-2,6\\cdot В+0,21\\cdot Р}$');
+INSERT INTO formula (Calculation_form) VALUES('$УФС=\\frac{700-3\\cdot ЧСС-2,5\\cdot СДД-2,7\\cdot В+0,28\\cdot МТ}{350-2,6\\cdot В+0,21\\cdot Р}$');
 INSERT INTO formula (Calculation_form) VALUES('$ИМТ=\\frac{МТ}{{{ДТ}^{2}}}$');
 INSERT INTO formula (Calculation_form) VALUES('$ЖИ=\\frac{ЖЕЛ}{МТ}$');
-INSERT INTO formula (Calculation_form) VALUES('\\[ИФИ=0,01\\cdot (1,1\\cdot ЧСС+1,4\\cdot САД+0,8\\cdot ДАД+1,4\\cdot В+9\\cdot МТ-0,9\\cdot ДТ/100-27)\\]');
-INSERT INTO formula (Calculation_form) VALUES('$РИ=0,75\\cdot (ЧСС+0,74\\cdot ПД)-72$');
+INSERT INTO formula (Calculation_form) VALUES('$ИФИ=0,01\\cdot (1,1\\cdot ЧСС+1,4\\cdot САД+0,8\\cdot ДАД+1,4\\cdot В+9\\cdot МТ-0,9\\cdot ДТ/100-27)$');
+INSERT INTO formula (Calculation_form) VALUES('$РИ=0,75\\cdot (ЧСС+0,74\c\dot ПД)-72$');
 INSERT INTO formula (Calculation_form) VALUES('$ИР=\\frac{ЧСС\\times САД}{100}$');
-INSERT INTO formula (Calculation_form) VALUES('\\[УПС=\\frac{СДД\\times S}{ДМО}\\]');
-INSERT INTO formula (Calculation_form) VALUES('\\[ИПСС=\\frac{СДД\\times 1330\\times 60}{МОК}\\]');
-INSERT INTO formula (Calculation_form) VALUES('\\[ППС=\\frac{СДД\\times 1330\\times 60}{УО}\\]');
-INSERT INTO formula (Calculation_form) VALUES('\\[УО=\\frac{ПД\\times 100}{\\left( ССА+ДАД \\right)/2}\\]');
+INSERT INTO formula (Calculation_form) VALUES('$УПС=\\frac{СДД\\times S}{ДМО}$');
+INSERT INTO formula (Calculation_form) VALUES('$ИПСС=\\frac{СДД\\times 1330\\times 60}{МОК}$');
+INSERT INTO formula (Calculation_form) VALUES('$ППС=\\frac{СДД\times 1330\\times 60}{УО}$');
+INSERT INTO formula (Calculation_form) VALUES('$УО=\\frac{ПД\\times 100}{\\left( ССА+ДАД \\right)/2}$');
 INSERT INTO formula (Calculation_form) VALUES('$ОПС=\\frac{{{АД}_{ср}}\\times 1333\\times 60}{МОК}$');
 INSERT INTO formula (Calculation_form) VALUES('$ПД=САД-ДАД$');
 INSERT INTO formula (Calculation_form) VALUES('$S=71,84\\cdot {{МТ}^{0,425}}\\cdot {{Р}^{0,725}}$');
 INSERT INTO formula (Calculation_form) VALUES('$СО=90,97+0,54\\cdot ПД-0,57\\cdot ДАД-0,61\\cdot В$');
-INSERT INTO formula (Calculation_form) VALUES('$ИВ=\\frac{ЧСС\\times САД}{64}\\times \\left( 0,4\\times В+109 \\right)$');
+INSERT INTO formula (Calculation_form) VALUES('$ИВ=\\frac{ЧСС\\times САД}{64}\\times \left( 0,4\\times В+109 \\right)$');
 INSERT INTO formula (Calculation_form) VALUES('$ВИК=\\left( 1-\\frac{ДАД}{ЧСС} \\right)\\times 100%$');
 INSERT INTO formula (Calculation_form) VALUES('$ЖЕЛ=0,52\\cdot Р -0,022\\cdot В $');
-INSERT INTO formula (Calculation_form) VALUES('\\[ЖЕЛ=ДО+РОвд+РОвыд\\]');
+INSERT INTO formula (Calculation_form) VALUES('$ЖЕЛ=ДО+РОвд+РОвыд$');
+INSERT INTO formula (Calculation_form) VALUES('$СДД=ДАД+\\frac{1}{3}\\cdot ПД$');
 
 # Данные таблицы unit_form_basic
 UPDATE unit_form_basic SET idFormula = 19 WHERE idBasicName = 5;
@@ -155,6 +158,7 @@ UPDATE unit_form_basic SET idFormula = 16 WHERE idBasicName = 43;
 UPDATE unit_form_basic SET idFormula = 17 WHERE idBasicName = 44;
 UPDATE unit_form_basic SET idFormula = 23 WHERE idBasicName = 45;
 UPDATE unit_form_basic SET idFormula = 18 WHERE idBasicName = 46;
+UPDATE unit_form_basic SET idFormula = 25 WHERE idBasicName = 47;
 INSERT INTO unit_form_basic (idFormula, idBasicName) VALUES(24, 45);
 
 # Данные таблицы `language_add_indicator`
@@ -189,7 +193,7 @@ INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage,
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('Ан', 'Амплитуда мышечного движения в начале работы', 1, 25);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('Ак', 'Амплитуда мышечного движения в конце работы', 1, 26);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('КВ', 'Индекс Квааса', 1, 27);
-INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('IМ', 'Индекс Мызникова', 1, 28);
+INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('IM', 'Индекс Мызникова', 1, 28);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ЭФдс', 'Показатель экономичности функционирования дыхательной системы', 1, 29);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('УрС', 'Уровень стресса', 1, 30);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('УФС', 'Уровень физического состояни', 1, 31);
@@ -203,8 +207,9 @@ INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage,
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('СО', 'Систолический объем крови', 1, 39);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('УПС', 'Удельное периферическое сопротивление', 1, 40);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ИПСС', 'Индекс периферического сопротивления сосудов', 1, 41);
-INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ПСС', 'Периферическоео сопротивление сосудов', 1, 42);
+INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ПСС', 'Периферическое сопротивление сосудов', 1, 42);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('УО', 'Ударный объем крови', 1, 43);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ОПС', 'Общее периферическое сопротивление', 1, 44);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ЖЕЛ', 'Жизненная емкость легких', 1, 45);
 INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('ПД', 'Пульсовое артериальное давление', 1, 46);
+INSERT INTO additional_name (Abbreviation_add_name, Decoding_abbrev, idLanguage, idBasicName) VALUES('СДД', 'Среднединамическое артериальное давление', 1, 47);

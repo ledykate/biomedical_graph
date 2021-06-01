@@ -363,7 +363,7 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                 self.g = igraph.Graph(directed=True)  # создание направленного графа
                 self.g.add_vertices(len(vertices_label_ind))  # количество вершин
                 self.g.add_edges(edges_graph)  # добавление рёбер
-
+                
                 output_vs = vertices_label_graph.copy()  # для вывода имён на графе
                 # перенос имён по разделителю для удобного вывода
                 for i in range(len(output_vs)):
@@ -384,7 +384,6 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                     s_z = 55  # размер вершины
                 self.g.vs["size"] = s_z  # размер вершин
                 self.g.vs["label_size"] = l_s  # размер подписи
-
                 self.g.es["width"] = 1.2  # ширина ребра
                 # нумерация рёбер
                 self.g.es["weight"] = [i + 1 for i in range(len(edges_graph))]
@@ -392,9 +391,16 @@ class Main(QMainWindow):  # класс, где храняться все дей�
 
                 # размер изображения
                 b = int(self.spinBox_bbox_graph.value())
-
+                
+                # как размещать вершины
+                if self.checkBox_circle.isChecked():
+                    self.layout_g = self.g.layout_circle() # по кругу
+                else:
+                    self.layout_g = self.g.layout_random() # рандомно
+                    
                 # построение графа
                 igraph.plot(self.g, "test_indic.png", bbox=(b, b), 
+                            layout = self.layout_g,
                             margin=(55, 100, 55, 100))
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")

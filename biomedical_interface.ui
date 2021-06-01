@@ -295,9 +295,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="label_3">
+        <widget class="QCheckBox" name="checkBox_circle">
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
          <property name="text">
-          <string/>
+          <string>Размещение вершин по кругу</string>
          </property>
         </widget>
        </item>
