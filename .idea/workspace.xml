@@ -21,8 +21,7 @@
   <component name="ChangeListManager">
     <list default="true" id="e56c89f4-247c-43b3-9c82-78e720766c03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/biomedical_indicators_insert.sql" beforeDir="false" afterPath="$PROJECT_DIR$/biomedical_indicators_insert.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/my_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/my_graph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graph_model_applic.py" beforeDir="false" afterPath="$PROJECT_DIR$/graph_model_applic.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_indic.png" beforeDir="false" afterPath="$PROJECT_DIR$/test_indic.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

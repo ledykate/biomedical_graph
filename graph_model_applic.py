@@ -395,13 +395,19 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                 # как размещать вершины
                 if self.checkBox_circle.isChecked():
                     self.layout_g = self.g.layout_circle() # по кругу
+                    igraph.plot(self.g, "test_indic.png", bbox=(b, b),
+                                layout=self.layout_g,
+                                margin=(55, 100, 55, 100))
                 else:
-                    self.layout_g = self.g.layout_random() # рандомно
+                    igraph.plot(self.g, "test_indic.png", bbox=(b, b),
+                                margin=(55, 100, 55, 100))
                     
                 # построение графа
+                '''
                 igraph.plot(self.g, "test_indic.png", bbox=(b, b), 
                             layout = self.layout_g,
                             margin=(55, 100, 55, 100))
+                '''
                 # вывод изображения с графом
                 self.filename = os.path.abspath("test_indic.png")
                 self.pixmap = QPixmap(self.filename)
@@ -410,7 +416,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
             QMessageBox.information(self, 'Сообщение', "Вы не обновили данные")
 
     # ИЗМЕНЕНИЕ РАЗМЕРА ИЗОБРАЖЕНИЕ
-    def big(self):  # увеличение изображения
+    # увеличение изображения
+    def big(self):
         if self.filename != '':  # если изображение выведено
             w = self.pixmap.width()  # считываем исходную ширину
             h = self.pixmap.height()  # считываем исходную высоту
@@ -419,7 +426,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
             y = round((val / 100) * h)  # новое значение высоты
             self.img.setPixmap(self.pixmap.scaled(x, y, Qt.KeepAspectRatio, Qt.FastTransformation))
 
-    def small(self):  # уменьшение изображения
+    # уменьшение изображения
+    def small(self):
         if self.filename != '':  # если изображение выведено
             w = self.pixmap.width()  # считываем исходную ширину
             h = self.pixmap.height()  # считываем исходную высоту
@@ -492,7 +500,8 @@ class Main(QMainWindow):  # класс, где храняться все дей�
                 elif self.lang != "Латинские названия" and self.m >= 2:
                     self.table_equip_ind.setHorizontalHeaderLabels(header_ind[:])
 
-    def saveas_file(self):  # сохранить изображение как (смена имени или выбор другой папки)
+    # сохранить изображение как (смена имени или выбор другой папки)
+    def saveas_file(self):
         # выбор папки и имени для сохранения
         if self.filename != '':
             name = QFileDialog.getSaveFileName(self, 'Сохранить как', 'мой граф', "*.png")[0]
